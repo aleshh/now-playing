@@ -10,10 +10,11 @@ struct RefreshArtworkIntent: AppIntent {
     static let openAppWhenRun = false
 
     func perform() async throws -> some IntentResult {
-        let outcome = await PlaybackRefreshCoordinator.refresh()
+        let widgetTapURL = WidgetTapAppSettings.url
+        _ = await PlaybackRefreshCoordinator.refresh()
 
-        if case .noPlayback(let fallbackURL) = outcome, let fallbackURL {
-            return .result(opensIntent: OpenURLIntent(fallbackURL))
+        if let widgetTapURL {
+            return .result(opensIntent: OpenURLIntent(widgetTapURL))
         }
         return .result()
     }
@@ -27,9 +28,10 @@ struct LegacyRefreshArtworkIntent: AppIntent {
     static let openAppWhenRun = true
 
     func perform() async throws -> some IntentResult {
-        let outcome = await PlaybackRefreshCoordinator.refresh()
-        if case .noPlayback(let fallbackURL) = outcome, let fallbackURL {
-            PendingFallbackStore.put(fallbackURL)
+        let widgetTapURL = WidgetTapAppSettings.url
+        _ = await PlaybackRefreshCoordinator.refresh()
+        if let widgetTapURL {
+            PendingWidgetTapURLStore.put(widgetTapURL)
         }
         return .result()
     }

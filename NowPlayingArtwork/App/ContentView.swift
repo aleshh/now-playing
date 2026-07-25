@@ -14,7 +14,7 @@ struct ContentView: View {
                 if SharedConfiguration.sonosEnabled {
                     sonosSection
                 }
-                fallbackSection
+                widgetTapAppSection
 
                 if let message = model.statusMessage {
                     Section("Status") {
@@ -29,7 +29,7 @@ struct ContentView: View {
             Task { await model.handleIncomingURL(url) }
         }
         .task(id: scenePhase) {
-            await forwardPendingFallbackIfNeeded()
+            await forwardPendingWidgetTapURLIfNeeded()
         }
     }
 
@@ -118,19 +118,19 @@ struct ContentView: View {
         }
     }
 
-    private var fallbackSection: some View {
+    private var widgetTapAppSection: some View {
         Section {
-            TextField("App URL (for example, spotify://)", text: $model.fallbackURLText)
+            TextField("App URL (for example, spotify://)", text: $model.widgetTapAppURLText)
                 .textInputAutocapitalization(.never)
                 .autocorrectionDisabled()
                 .keyboardType(.URL)
-            Button("Save Fallback App") {
-                model.saveFallbackURL()
+            Button("Save Widget Tap App") {
+                model.saveWidgetTapAppURL()
             }
         } header: {
-            Text("Fallback App")
+            Text("Widget Tap App")
         } footer: {
-            Text("Opened only when both connected services report no active playback.")
+            Text("Opened whenever the widget is tapped, after the artwork refresh is requested.")
         }
     }
 
@@ -146,7 +146,7 @@ struct ContentView: View {
         }
     }
 
-    private func forwardPendingFallbackIfNeeded() async {
+    private func forwardPendingWidgetTapURLIfNeeded() async {
         guard scenePhase == .active else {
             return
         }
@@ -158,8 +158,8 @@ struct ContentView: View {
             if Task.isCancelled {
                 return
             }
-            if let fallbackURL = PendingFallbackStore.takeIfFresh() {
-                openURL(fallbackURL)
+            if let widgetTapURL = PendingWidgetTapURLStore.takeIfFresh() {
+                openURL(widgetTapURL)
                 return
             }
             try? await Task.sleep(for: .milliseconds(500))

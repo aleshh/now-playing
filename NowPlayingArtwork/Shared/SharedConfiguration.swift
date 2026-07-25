@@ -42,7 +42,8 @@ enum SharedConfiguration {
     }
 }
 
-enum FallbackAppSettings {
+enum WidgetTapAppSettings {
+    // Keep the original key so existing installations retain their saved URL.
     private static let urlKey = "fallbackAppURL"
 
     static var url: URL? {
@@ -73,7 +74,7 @@ enum FallbackAppSettings {
     }
 }
 
-enum PendingFallbackStore {
+enum PendingWidgetTapURLStore {
     private static let urlKey = "pendingFallbackURL"
     private static let dateKey = "pendingFallbackDate"
 
@@ -96,6 +97,6 @@ enum PendingFallbackStore {
         guard Date().timeIntervalSince1970 - timestamp <= maximumAge else {
             return nil
         }
-        return FallbackAppSettings.normalizedURL(from: value)
+        return WidgetTapAppSettings.normalizedURL(from: value)
     }
 }

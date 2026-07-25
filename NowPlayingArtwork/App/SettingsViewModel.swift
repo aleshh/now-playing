@@ -7,7 +7,7 @@ final class SettingsViewModel: ObservableObject {
     @Published var spotifyClientID: String
     @Published var sonosClientID: String
     @Published var sonosClientSecret: String
-    @Published var fallbackURLText: String
+    @Published var widgetTapAppURLText: String
 
     @Published private(set) var isSpotifyConnected: Bool
     @Published private(set) var isSonosConnected: Bool
@@ -23,7 +23,7 @@ final class SettingsViewModel: ObservableObject {
         spotifyClientID = CredentialVault.string(CredentialAccount.spotifyClientID) ?? ""
         sonosClientID = CredentialVault.string(CredentialAccount.sonosClientID) ?? ""
         sonosClientSecret = CredentialVault.string(CredentialAccount.sonosClientSecret) ?? ""
-        fallbackURLText = FallbackAppSettings.url?.absoluteString ?? ""
+        widgetTapAppURLText = WidgetTapAppSettings.url?.absoluteString ?? ""
         isSpotifyConnected = CredentialVault.token(CredentialAccount.spotifyToken) != nil
         isSonosConnected = CredentialVault.token(CredentialAccount.sonosToken) != nil
         cachedArtworkData = ArtworkCache.cachedData()
@@ -139,13 +139,13 @@ final class SettingsViewModel: ObservableObject {
         }
     }
 
-    func saveFallbackURL() {
-        if fallbackURLText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            FallbackAppSettings.save("")
-            statusMessage = "Fallback app cleared."
-        } else if FallbackAppSettings.normalizedURL(from: fallbackURLText) != nil {
-            FallbackAppSettings.save(fallbackURLText)
-            statusMessage = "Fallback app saved."
+    func saveWidgetTapAppURL() {
+        if widgetTapAppURLText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            WidgetTapAppSettings.save("")
+            statusMessage = "Widget tap app cleared."
+        } else if WidgetTapAppSettings.normalizedURL(from: widgetTapAppURLText) != nil {
+            WidgetTapAppSettings.save(widgetTapAppURLText)
+            statusMessage = "Widget tap app saved."
         } else {
             statusMessage = "Enter a valid app URL, such as spotify://."
         }

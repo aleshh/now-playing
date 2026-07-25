@@ -65,10 +65,10 @@ struct NowPlayingArtworkWidgetView: View {
                 .clipped()
         } else {
             ZStack {
-                Color(uiColor: .secondarySystemBackground)
+                Color.black
                 Image(systemName: "music.note")
                     .font(.system(size: 34, weight: .medium))
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(Color.white.opacity(0.55))
                     .accessibilityHidden(true)
             }
         }

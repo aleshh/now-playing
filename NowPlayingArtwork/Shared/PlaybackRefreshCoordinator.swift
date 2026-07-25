@@ -3,7 +3,7 @@ import WidgetKit
 
 enum PlaybackRefreshOutcome: Equatable, Sendable {
     case updated
-    case noPlayback(URL?)
+    case noPlayback
     case failed(String)
 }
 
@@ -31,7 +31,7 @@ enum PlaybackRefreshCoordinator {
                 return .failed("Artwork: \(error.localizedDescription)")
             }
         case .fallback:
-            return .noPlayback(FallbackAppSettings.url)
+            return .noPlayback
         case .unavailable(let message):
             return .failed(message)
         }

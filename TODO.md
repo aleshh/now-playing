@@ -71,7 +71,7 @@ Official references: [Spotify Developer Policy](https://developer.spotify.com/po
 - [ ] Prepare the App Store icon, screenshots, description, and privacy disclosures.
 - [ ] Give App Review working access and clear instructions for testing Spotify authentication and the widget.
 - [ ] Verify that the app follows Spotify's terms for third-party content and services.
-- [ ] Test authentication, artwork refresh, fallback behavior, and both widget sizes in a Release build.
+- [ ] Test authentication, artwork refresh, widget-tap app opening, and both widget sizes in a Release build.
 
 Official reference: [Apple App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)
 
@@ -91,13 +91,14 @@ For both the app and widget targets in **Signing & Capabilities**:
 
 The Associated Domains capability is intentionally not needed in Spotify-only mode.
 
-## Fallback app
+## Widget tap app
 
 - [ ] Enter an installed app URL in the main app, for example `spotify://` or `music://`.
-- [ ] Tap **Save Fallback App**.
-- [ ] Pause Spotify and tap the widget to verify fallback behavior.
+- [ ] Tap **Save Widget Tap App**.
+- [ ] Tap the widget during and outside Spotify playback and confirm that the configured app opens.
+- [ ] Confirm that the last successful artwork remains visible when nothing is playing.
 
-On iOS 18.2+, the fallback opens directly. On iOS 17–18.1, the host app briefly opens before forwarding to the fallback.
+On iOS 18.2+, the configured app opens directly after the artwork refresh. On iOS 17–18.1, the host app briefly opens before forwarding to it.
 
 ## Deferred Sonos setup
 
@@ -178,7 +179,8 @@ The current implementation stores the user-supplied Sonos secret in the shared K
 
 ## Notes
 
-- A network or authentication failure does not launch the fallback because the app cannot safely conclude that nothing is playing.
+- The configured widget-tap app opens even when playback is idle or the artwork refresh fails.
+- Idle playback and refresh failures leave the most recently cached artwork unchanged.
 - Artwork downloads are validated, capped at 20 MB, and written atomically to the App Group.
 - OAuth credentials and tokens are stored in the shared Keychain rather than UserDefaults.
 - The widget supports the square system-small and system-large families.
