@@ -11,7 +11,9 @@ struct ContentView: View {
             Form {
                 artworkSection
                 spotifySection
-                sonosSection
+                if SharedConfiguration.sonosEnabled {
+                    sonosSection
+                }
                 fallbackSection
 
                 if let message = model.statusMessage {

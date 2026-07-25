@@ -17,6 +17,14 @@ enum SharedConfiguration {
         infoValue(named: "SonosRedirectURI") ?? "https://example.com/sonos/callback"
     }
 
+    static var sonosEnabled: Bool {
+        if let value = Bundle.main.object(forInfoDictionaryKey: "SonosEnabled") as? Bool {
+            return value
+        }
+        return (Bundle.main.object(forInfoDictionaryKey: "SonosEnabled") as? String)?
+            .localizedCaseInsensitiveCompare("YES") == .orderedSame
+    }
+
     static let spotifyRedirectURI = "now-playing-artwork-login://spotify/callback"
 
     static var sharedDefaults: UserDefaults {

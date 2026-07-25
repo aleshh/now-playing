@@ -9,9 +9,17 @@ enum PlaybackRefreshOutcome: Equatable, Sendable {
 
 enum PlaybackRefreshCoordinator {
     static func refresh() async -> PlaybackRefreshOutcome {
-        async let sonos = SonosService().activeArtworkProbe()
-        async let spotify = SpotifyService().activeArtworkProbe()
-        let decision = await PlaybackSelector.decide(sonos: sonos, spotify: spotify)
+        async let spotifyProbe = SpotifyService().activeArtworkProbe()
+        let sonosProbe: PlaybackProbe
+        if SharedConfiguration.sonosEnabled {
+            sonosProbe = await SonosService().activeArtworkProbe()
+        } else {
+            sonosProbe = .idle
+        }
+        let decision = await PlaybackSelector.decide(
+            sonos: sonosProbe,
+            spotify: spotifyProbe
+        )
 
         switch decision {
         case .artwork(let url):

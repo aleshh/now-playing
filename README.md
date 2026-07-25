@@ -4,6 +4,8 @@ An iOS 17+ SwiftUI app with a system-small WidgetKit extension. Tapping the edge
 
 OAuth tokens, client IDs, and the Sonos client secret use a shared Keychain access group. Artwork and the fallback URL use the shared App Group container.
 
+> The current project configuration is Spotify-only (`SONOS_ENABLED = NO`). Deferred Sonos setup is tracked in `TODO.md`.
+
 ## Required project setup
 
 Open `NowPlayingArtwork.xcodeproj` and update these project-level build settings for both Debug and Release:

@@ -29,6 +29,8 @@
 	</dict>
 	<key>SharedKeychainGroup</key>
 	<string>$(SHARED_KEYCHAIN_GROUP)</string>
+	<key>SonosEnabled</key>
+	<string>$(SONOS_ENABLED)</string>
 	<key>SonosRedirectURI</key>
 	<string>https://$(OAUTH_CALLBACK_DOMAIN)/sonos/callback</string>
 </dict>

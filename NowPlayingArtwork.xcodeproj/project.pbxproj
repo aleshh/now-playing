@@ -398,7 +398,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_GROUP_IDENTIFIER = group.com.example.NowPlayingArtwork;
+				APP_GROUP_IDENTIFIER = group.com.alesh.NowPlayingArtwork;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -440,10 +440,11 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
-				ONLY_ACTIVE_ARCH = YES;
 				OAUTH_CALLBACK_DOMAIN = example.com;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				SHARED_KEYCHAIN_GROUP = com.example.NowPlayingArtwork.shared;
+				SHARED_KEYCHAIN_GROUP = com.alesh.NowPlayingArtwork.shared;
+				SONOS_ENABLED = NO;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -453,7 +454,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				APP_GROUP_IDENTIFIER = group.com.example.NowPlayingArtwork;
+				APP_GROUP_IDENTIFIER = group.com.alesh.NowPlayingArtwork;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -491,7 +492,8 @@
 				MTL_FAST_MATH = YES;
 				OAUTH_CALLBACK_DOMAIN = example.com;
 				SDKROOT = iphoneos;
-				SHARED_KEYCHAIN_GROUP = com.example.NowPlayingArtwork.shared;
+				SHARED_KEYCHAIN_GROUP = com.alesh.NowPlayingArtwork.shared;
+				SONOS_ENABLED = NO;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -504,14 +506,16 @@
 				CODE_SIGN_ENTITLEMENTS = NowPlayingArtwork/Resources/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F4928M42KQ;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "NowPlayingArtwork/Resources/App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Now Playing";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alesh.NowPlayingArtwork;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = minimal;
@@ -527,14 +531,16 @@
 				CODE_SIGN_ENTITLEMENTS = NowPlayingArtwork/Resources/App.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F4928M42KQ;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = "NowPlayingArtwork/Resources/App-Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Now Playing";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alesh.NowPlayingArtwork;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_STRICT_CONCURRENCY = minimal;
@@ -550,6 +556,7 @@
 				CODE_SIGN_ENTITLEMENTS = NowPlayingArtworkWidget/NowPlayingArtworkWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F4928M42KQ;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = NowPlayingArtworkWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -558,7 +565,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alesh.NowPlayingArtwork.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -575,6 +582,7 @@
 				CODE_SIGN_ENTITLEMENTS = NowPlayingArtworkWidget/NowPlayingArtworkWidget.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = F4928M42KQ;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = NowPlayingArtworkWidget/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -583,7 +591,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork.widget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alesh.NowPlayingArtwork.widget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -598,8 +606,9 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F4928M42KQ;
 				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alesh.NowPlayingArtwork.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
@@ -613,8 +622,9 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = F4928M42KQ;
 				GENERATE_INFOPLIST_FILE = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.alesh.NowPlayingArtwork.tests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_STRICT_CONCURRENCY = minimal;
 				SWIFT_VERSION = 5.0;
