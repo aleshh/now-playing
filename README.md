@@ -1,6 +1,6 @@
 # Now Playing Artwork
 
-An iOS 17+ SwiftUI app with a system-small WidgetKit extension. Tapping the edge-to-edge widget checks Sonos and Spotify in parallel, prefers Sonos, caches validated artwork in an App Group, and reloads the widget. With no cached image, the widget shows a neutral music-note placeholder.
+An iOS 17+ SwiftUI app with system-small and system-large WidgetKit layouts. Tapping the edge-to-edge widget checks Sonos and Spotify in parallel, prefers Sonos, caches validated artwork in an App Group, and reloads the widget. With no cached image, the widget shows a neutral music-note placeholder.
 
 OAuth tokens, client IDs, and the Sonos client secret use a shared Keychain access group. Artwork and the fallback URL use the shared App Group container.
 
@@ -63,7 +63,7 @@ Official references: [Sonos authorization](https://docs.sonos.com/docs/authorize
 
 1. Connect either or both services in the main app.
 2. Set an optional fallback URL such as `spotify://` or `music://`.
-3. Add the **Now Playing Artwork** small widget.
+3. Add the **Now Playing Artwork** widget in either the small or large square size.
 4. Tap anywhere on the widget to refresh.
 
 On iOS 18.2+, the intent refreshes in place and opens the fallback only when both services are idle. On iOS 17–18.1, AppIntents cannot conditionally return an opening intent, so the compatibility intent briefly launches the host app; the host forwards to the fallback only when both services are idle.

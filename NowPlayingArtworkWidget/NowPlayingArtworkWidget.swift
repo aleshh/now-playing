@@ -85,7 +85,7 @@ struct NowPlayingArtworkWidget: Widget {
         }
         .configurationDisplayName("Now Playing Artwork")
         .description("Tap to refresh artwork from Sonos or Spotify.")
-        .supportedFamilies([.systemSmall])
+        .supportedFamilies([.systemSmall, .systemLarge])
         .contentMarginsDisabled()
     }
 }

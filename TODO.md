@@ -24,9 +24,62 @@
 - [ ] Run the main app, enter the client ID, and tap **Connect Spotify**.
 - [ ] Start Spotify playback and tap **Refresh Now** in the main app.
 - [ ] Confirm that cached artwork appears.
-- [ ] Add the **Now Playing Artwork** small widget and tap it to refresh.
+- [ ] Add both the small and large **Now Playing Artwork** widgets.
+- [ ] Tap each widget and confirm that the whole square is tappable and the artwork refreshes.
 
 If Spotify rejects the login in development mode, add the Spotify account under the developer app's permitted development users.
+
+## Possible App Store release
+
+There are two separate approval gates for a public release: Apple App Review and Spotify API access. App Store or TestFlight distribution does not remove Spotify's development-mode restrictions.
+
+### Production authentication
+
+- [ ] Replace the editable client-ID field with one Spotify client ID bundled in the app's build configuration.
+- [ ] Keep Authorization Code with PKCE; do not add or ship a Spotify client secret.
+- [ ] Continue storing each user's access and refresh tokens in the shared Keychain.
+- [ ] Let every user tap **Connect Spotify** and authorize their own Spotify account. Users do not need Spotify developer accounts or their own client IDs.
+
+A Spotify client ID is a public identifier and can be included in the app. A client secret must never be included in an iOS app.
+
+### Spotify access limitation
+
+- Spotify development mode currently permits up to five allowlisted Spotify users.
+- Those users may use the app on their own devices; the limit is on Spotify accounts, not devices.
+- TestFlight and App Store distribution still use the same Spotify quota mode.
+- A broadly available release therefore requires Spotify extended quota access.
+- Spotify's current extended-access criteria target established, legally registered organizations and include a launched service, commercial viability, availability in key markets, and at least 250,000 monthly active users. This makes approval difficult for a new independent app.
+
+Official reference: [Spotify quota modes](https://developer.spotify.com/documentation/web-api/concepts/quota-modes)
+
+### Spotify artwork and branding
+
+The current artwork-only, edge-to-edge widget is suitable for personal development, but likely needs redesign before public distribution:
+
+- [ ] Display Spotify attribution with Spotify-provided metadata and artwork.
+- [ ] Link displayed content back to the relevant Spotify content.
+- [ ] Do not present Spotify cover art as standalone content.
+- [ ] Do not crop, distort, or place overlays on Spotify artwork.
+- [ ] Reconcile those requirements with the current single-button, edge-to-edge widget design.
+
+Official references: [Spotify Developer Policy](https://developer.spotify.com/policy) and [Spotify Design Guidelines](https://developer.spotify.com/documentation/design)
+
+### Apple release requirements
+
+- [ ] Add a public privacy-policy URL.
+- [ ] Add support and product website URLs.
+- [ ] Prepare the App Store icon, screenshots, description, and privacy disclosures.
+- [ ] Give App Review working access and clear instructions for testing Spotify authentication and the widget.
+- [ ] Verify that the app follows Spotify's terms for third-party content and services.
+- [ ] Test authentication, artwork refresh, fallback behavior, and both widget sizes in a Release build.
+
+Official reference: [Apple App Review Guidelines](https://developer.apple.com/app-store/review/guidelines/)
+
+### Practical release paths
+
+- **Personal/friends:** Continue with the current Spotify development app and allowlist up to five Spotify accounts.
+- **Public with Spotify:** Obtain extended quota access and redesign Spotify artwork presentation to meet its policy and branding requirements.
+- **Public without Spotify:** Use a separately permitted source such as a future Sonos integration or locally supplied artwork.
 
 ## Apple capability checks
 
@@ -128,4 +181,4 @@ The current implementation stores the user-supplied Sonos secret in the shared K
 - A network or authentication failure does not launch the fallback because the app cannot safely conclude that nothing is playing.
 - Artwork downloads are validated, capped at 20 MB, and written atomically to the App Group.
 - OAuth credentials and tokens are stored in the shared Keychain rather than UserDefaults.
-- The widget supports the system-small family.
+- The widget supports the square system-small and system-large families.
