@@ -1,0 +1,668 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B00000000000000000000001 /* NowPlayingArtworkApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000001 /* NowPlayingArtworkApp.swift */; };
+		B00000000000000000000002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000002 /* ContentView.swift */; };
+		B00000000000000000000003 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000003 /* SettingsViewModel.swift */; };
+		B00000000000000000000004 /* OAuthWebSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000004 /* OAuthWebSession.swift */; };
+		B00000000000000000000005 /* SharedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000005 /* SharedConfiguration.swift */; };
+		B00000000000000000000006 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000006 /* KeychainStore.swift */; };
+		B00000000000000000000007 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000007 /* Models.swift */; };
+		B00000000000000000000008 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000008 /* HTTPClient.swift */; };
+		B00000000000000000000009 /* SpotifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000009 /* SpotifyService.swift */; };
+		B0000000000000000000000A /* SonosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000A /* SonosService.swift */; };
+		B0000000000000000000000B /* ArtworkCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000B /* ArtworkCache.swift */; };
+		B0000000000000000000000C /* PlaybackRefreshCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000C /* PlaybackRefreshCoordinator.swift */; };
+		B0000000000000000000000D /* RefreshArtworkIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000D /* RefreshArtworkIntent.swift */; };
+		B0000000000000000000000E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000E /* Assets.xcassets */; };
+		B0000000000000000000000F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000F /* PrivacyInfo.xcprivacy */; };
+		B00000000000000000000010 /* NowPlayingArtworkWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000010 /* NowPlayingArtworkWidget.swift */; };
+		B00000000000000000000011 /* SharedConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000005 /* SharedConfiguration.swift */; };
+		B00000000000000000000012 /* KeychainStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000006 /* KeychainStore.swift */; };
+		B00000000000000000000013 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000007 /* Models.swift */; };
+		B00000000000000000000014 /* HTTPClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000008 /* HTTPClient.swift */; };
+		B00000000000000000000015 /* SpotifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000009 /* SpotifyService.swift */; };
+		B00000000000000000000016 /* SonosService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000A /* SonosService.swift */; };
+		B00000000000000000000017 /* ArtworkCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000B /* ArtworkCache.swift */; };
+		B00000000000000000000018 /* PlaybackRefreshCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000C /* PlaybackRefreshCoordinator.swift */; };
+		B00000000000000000000019 /* RefreshArtworkIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000D /* RefreshArtworkIntent.swift */; };
+		B0000000000000000000001A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F0000000000000000000000F /* PrivacyInfo.xcprivacy */; };
+		B0000000000000000000001B /* NowPlayingArtworkWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = F00000000000000000000014 /* NowPlayingArtworkWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B0000000000000000000001C /* PlaybackSelectionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F00000000000000000000013 /* PlaybackSelectionTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D00000000000000000000001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C00000000000000000000002;
+			remoteInfo = NowPlayingArtworkWidget;
+		};
+		D00000000000000000000002 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A00000000000000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C00000000000000000000001;
+			remoteInfo = NowPlayingArtwork;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		E00000000000000000000005 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				B0000000000000000000001B /* NowPlayingArtworkWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		F00000000000000000000001 /* NowPlayingArtworkApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingArtworkApp.swift; sourceTree = "<group>"; };
+		F00000000000000000000002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F00000000000000000000003 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		F00000000000000000000004 /* OAuthWebSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthWebSession.swift; sourceTree = "<group>"; };
+		F00000000000000000000005 /* SharedConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedConfiguration.swift; sourceTree = "<group>"; };
+		F00000000000000000000006 /* KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		F00000000000000000000007 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		F00000000000000000000008 /* HTTPClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPClient.swift; sourceTree = "<group>"; };
+		F00000000000000000000009 /* SpotifyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyService.swift; sourceTree = "<group>"; };
+		F0000000000000000000000A /* SonosService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SonosService.swift; sourceTree = "<group>"; };
+		F0000000000000000000000B /* ArtworkCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtworkCache.swift; sourceTree = "<group>"; };
+		F0000000000000000000000C /* PlaybackRefreshCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackRefreshCoordinator.swift; sourceTree = "<group>"; };
+		F0000000000000000000000D /* RefreshArtworkIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshArtworkIntent.swift; sourceTree = "<group>"; };
+		F0000000000000000000000E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F0000000000000000000000F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		F00000000000000000000010 /* NowPlayingArtworkWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NowPlayingArtworkWidget.swift; sourceTree = "<group>"; };
+		F00000000000000000000011 /* App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "App-Info.plist"; sourceTree = "<group>"; };
+		F00000000000000000000012 /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
+		F00000000000000000000013 /* PlaybackSelectionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaybackSelectionTests.swift; sourceTree = "<group>"; };
+		F00000000000000000000014 /* NowPlayingArtworkWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NowPlayingArtworkWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		F00000000000000000000015 /* NowPlayingArtwork.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NowPlayingArtwork.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F00000000000000000000016 /* NowPlayingArtworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NowPlayingArtworkTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F00000000000000000000017 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F00000000000000000000018 /* NowPlayingArtworkWidget.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NowPlayingArtworkWidget.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E00000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E00000000000000000000007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0000000000000000000000A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A00000000000000000000002 = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000003 /* NowPlayingArtwork */,
+				A00000000000000000000007 /* NowPlayingArtworkWidget */,
+				A00000000000000000000008 /* NowPlayingArtworkTests */,
+				A00000000000000000000009 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A00000000000000000000003 /* NowPlayingArtwork */ = {
+			isa = PBXGroup;
+			children = (
+				A00000000000000000000004 /* App */,
+				A00000000000000000000005 /* Shared */,
+				A00000000000000000000006 /* Resources */,
+			);
+			path = NowPlayingArtwork;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000004 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000001 /* NowPlayingArtworkApp.swift */,
+				F00000000000000000000002 /* ContentView.swift */,
+				F00000000000000000000003 /* SettingsViewModel.swift */,
+				F00000000000000000000004 /* OAuthWebSession.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000005 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000005 /* SharedConfiguration.swift */,
+				F00000000000000000000006 /* KeychainStore.swift */,
+				F00000000000000000000007 /* Models.swift */,
+				F00000000000000000000008 /* HTTPClient.swift */,
+				F00000000000000000000009 /* SpotifyService.swift */,
+				F0000000000000000000000A /* SonosService.swift */,
+				F0000000000000000000000B /* ArtworkCache.swift */,
+				F0000000000000000000000C /* PlaybackRefreshCoordinator.swift */,
+				F0000000000000000000000D /* RefreshArtworkIntent.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000006 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000011 /* App-Info.plist */,
+				F00000000000000000000012 /* App.entitlements */,
+				F0000000000000000000000E /* Assets.xcassets */,
+				F0000000000000000000000F /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000007 /* NowPlayingArtworkWidget */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000010 /* NowPlayingArtworkWidget.swift */,
+				F00000000000000000000017 /* Info.plist */,
+				F00000000000000000000018 /* NowPlayingArtworkWidget.entitlements */,
+			);
+			path = NowPlayingArtworkWidget;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000008 /* NowPlayingArtworkTests */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000013 /* PlaybackSelectionTests.swift */,
+			);
+			path = NowPlayingArtworkTests;
+			sourceTree = "<group>";
+		};
+		A00000000000000000000009 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F00000000000000000000015 /* NowPlayingArtwork.app */,
+				F00000000000000000000014 /* NowPlayingArtworkWidget.appex */,
+				F00000000000000000000016 /* NowPlayingArtworkTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C00000000000000000000001 /* NowPlayingArtwork */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00000000000000000000011 /* Build configuration list for PBXNativeTarget "NowPlayingArtwork" */;
+			buildPhases = (
+				E00000000000000000000001 /* Sources */,
+				E00000000000000000000002 /* Frameworks */,
+				E00000000000000000000003 /* Resources */,
+				E00000000000000000000005 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D00000000000000000000003 /* PBXTargetDependency */,
+			);
+			name = NowPlayingArtwork;
+			productName = NowPlayingArtwork;
+			productReference = F00000000000000000000015 /* NowPlayingArtwork.app */;
+			productType = "com.apple.product-type.application";
+		};
+		C00000000000000000000002 /* NowPlayingArtworkWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00000000000000000000012 /* Build configuration list for PBXNativeTarget "NowPlayingArtworkWidget" */;
+			buildPhases = (
+				E00000000000000000000006 /* Sources */,
+				E00000000000000000000007 /* Frameworks */,
+				E00000000000000000000008 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NowPlayingArtworkWidget;
+			productName = NowPlayingArtworkWidget;
+			productReference = F00000000000000000000014 /* NowPlayingArtworkWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		C00000000000000000000003 /* NowPlayingArtworkTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A00000000000000000000013 /* Build configuration list for PBXNativeTarget "NowPlayingArtworkTests" */;
+			buildPhases = (
+				E00000000000000000000009 /* Sources */,
+				E0000000000000000000000A /* Frameworks */,
+				E0000000000000000000000B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D00000000000000000000004 /* PBXTargetDependency */,
+			);
+			name = NowPlayingArtworkTests;
+			productName = NowPlayingArtworkTests;
+			productReference = F00000000000000000000016 /* NowPlayingArtworkTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A00000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					C00000000000000000000001 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					C00000000000000000000002 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+					C00000000000000000000003 = {
+						CreatedOnToolsVersion = 26.0;
+						TestTargetID = C00000000000000000000001;
+					};
+				};
+			};
+			buildConfigurationList = A00000000000000000000010 /* Build configuration list for PBXProject "NowPlayingArtwork" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A00000000000000000000002;
+			productRefGroup = A00000000000000000000009 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				C00000000000000000000001 /* NowPlayingArtwork */,
+				C00000000000000000000002 /* NowPlayingArtworkWidget */,
+				C00000000000000000000003 /* NowPlayingArtworkTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		E00000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0000000000000000000000E /* Assets.xcassets in Resources */,
+				B0000000000000000000000F /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E00000000000000000000008 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0000000000000000000001A /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0000000000000000000000B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		E00000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B00000000000000000000001 /* NowPlayingArtworkApp.swift in Sources */,
+				B00000000000000000000002 /* ContentView.swift in Sources */,
+				B00000000000000000000003 /* SettingsViewModel.swift in Sources */,
+				B00000000000000000000004 /* OAuthWebSession.swift in Sources */,
+				B00000000000000000000005 /* SharedConfiguration.swift in Sources */,
+				B00000000000000000000006 /* KeychainStore.swift in Sources */,
+				B00000000000000000000007 /* Models.swift in Sources */,
+				B00000000000000000000008 /* HTTPClient.swift in Sources */,
+				B00000000000000000000009 /* SpotifyService.swift in Sources */,
+				B0000000000000000000000A /* SonosService.swift in Sources */,
+				B0000000000000000000000B /* ArtworkCache.swift in Sources */,
+				B0000000000000000000000C /* PlaybackRefreshCoordinator.swift in Sources */,
+				B0000000000000000000000D /* RefreshArtworkIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E00000000000000000000006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B00000000000000000000010 /* NowPlayingArtworkWidget.swift in Sources */,
+				B00000000000000000000011 /* SharedConfiguration.swift in Sources */,
+				B00000000000000000000012 /* KeychainStore.swift in Sources */,
+				B00000000000000000000013 /* Models.swift in Sources */,
+				B00000000000000000000014 /* HTTPClient.swift in Sources */,
+				B00000000000000000000015 /* SpotifyService.swift in Sources */,
+				B00000000000000000000016 /* SonosService.swift in Sources */,
+				B00000000000000000000017 /* ArtworkCache.swift in Sources */,
+				B00000000000000000000018 /* PlaybackRefreshCoordinator.swift in Sources */,
+				B00000000000000000000019 /* RefreshArtworkIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E00000000000000000000009 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B0000000000000000000001C /* PlaybackSelectionTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D00000000000000000000003 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C00000000000000000000002 /* NowPlayingArtworkWidget */;
+			targetProxy = D00000000000000000000001 /* PBXContainerItemProxy */;
+		};
+		D00000000000000000000004 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C00000000000000000000001 /* NowPlayingArtwork */;
+			targetProxy = D00000000000000000000002 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A00000000000000000000020 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APP_GROUP_IDENTIFIER = group.com.example.NowPlayingArtwork;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OAUTH_CALLBACK_DOMAIN = example.com;
+				SDKROOT = iphoneos;
+				SHARED_KEYCHAIN_GROUP = com.example.NowPlayingArtwork.shared;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A00000000000000000000021 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				APP_GROUP_IDENTIFIER = group.com.example.NowPlayingArtwork;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				OAUTH_CALLBACK_DOMAIN = example.com;
+				SDKROOT = iphoneos;
+				SHARED_KEYCHAIN_GROUP = com.example.NowPlayingArtwork.shared;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A00000000000000000000022 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NowPlayingArtwork/Resources/App.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "NowPlayingArtwork/Resources/App-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A00000000000000000000023 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = NowPlayingArtwork/Resources/App.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "NowPlayingArtwork/Resources/App-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A00000000000000000000024 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = NowPlayingArtworkWidget/NowPlayingArtworkWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = NowPlayingArtworkWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A00000000000000000000025 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = NowPlayingArtworkWidget/NowPlayingArtworkWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = NowPlayingArtworkWidget/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork.widget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A00000000000000000000026 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NowPlayingArtwork.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NowPlayingArtwork";
+			};
+			name = Debug;
+		};
+		A00000000000000000000027 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.NowPlayingArtwork.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/NowPlayingArtwork.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/NowPlayingArtwork";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A00000000000000000000010 /* Build configuration list for PBXProject "NowPlayingArtwork" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000020 /* Debug */,
+				A00000000000000000000021 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00000000000000000000011 /* Build configuration list for PBXNativeTarget "NowPlayingArtwork" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000022 /* Debug */,
+				A00000000000000000000023 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00000000000000000000012 /* Build configuration list for PBXNativeTarget "NowPlayingArtworkWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000024 /* Debug */,
+				A00000000000000000000025 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A00000000000000000000013 /* Build configuration list for PBXNativeTarget "NowPlayingArtworkTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A00000000000000000000026 /* Debug */,
+				A00000000000000000000027 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A00000000000000000000001 /* Project object */;
+}
