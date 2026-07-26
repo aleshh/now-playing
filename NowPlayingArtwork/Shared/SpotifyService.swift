@@ -1,9 +1,52 @@
 import Foundation
 
+enum SpotifyAuthorization {
+    static let currentGrantVersion = "recent-albums-v1"
+    static let scopes = [
+        "user-read-currently-playing",
+        "user-read-playback-state",
+        "user-read-recently-played"
+    ]
+
+    static var hasCurrentGrant: Bool {
+        CredentialVault.string(CredentialAccount.spotifyGrantVersion) == currentGrantVersion
+    }
+}
+
+struct RecentAlbumArtwork: Equatable, Sendable {
+    let albumID: String
+    let url: URL
+}
+
+enum RecentAlbumArtworkSelector {
+    static func uniqueURLs(
+        from candidates: [RecentAlbumArtwork],
+        limit: Int
+    ) -> [URL] {
+        guard limit > 0 else {
+            return []
+        }
+
+        var seenAlbumIDs = Set<String>()
+        var result: [URL] = []
+
+        for candidate in candidates where seenAlbumIDs.insert(candidate.albumID).inserted {
+            result.append(candidate.url)
+            if result.count == limit {
+                break
+            }
+        }
+        return result
+    }
+}
+
 struct SpotifyService {
     private static let tokenURL = URL(string: "https://accounts.spotify.com/api/token")!
     private static let currentlyPlayingURL = URL(
         string: "https://api.spotify.com/v1/me/player/currently-playing?additional_types=track,episode"
+    )!
+    private static let recentlyPlayedURL = URL(
+        string: "https://api.spotify.com/v1/me/player/recently-played?limit=50"
     )!
 
     func exchangeAuthorizationCode(
@@ -35,14 +78,17 @@ struct SpotifyService {
         else {
             return .idle
         }
+        guard SpotifyAuthorization.hasCurrentGrant else {
+            return .unavailable(
+                "Reconnect Spotify in the app to enable the recent-albums grid."
+            )
+        }
 
         do {
-            var token = try await validToken(clientID: clientID)
-            var response = try await currentlyPlaying(accessToken: token.accessToken)
-            if response.1.statusCode == 401 {
-                token = try await refreshToken(clientID: clientID, force: true)
-                response = try await currentlyPlaying(accessToken: token.accessToken)
-            }
+            let response = try await authorizedGET(
+                url: Self.currentlyPlayingURL,
+                clientID: clientID
+            )
 
             if response.1.statusCode == 204 {
                 return .idle
@@ -73,14 +119,53 @@ struct SpotifyService {
         }
     }
 
-    private func currentlyPlaying(
-        accessToken: String
-    ) async throws -> (Data, HTTPURLResponse) {
-        let request = HTTPClient.bearerRequest(
-            url: Self.currentlyPlayingURL,
-            accessToken: accessToken
+    func recentAlbumArtworkURLs(limit: Int = 9) async throws -> [URL] {
+        guard let clientID = CredentialVault.string(CredentialAccount.spotifyClientID),
+              CredentialVault.token(CredentialAccount.spotifyToken) != nil
+        else {
+            return []
+        }
+        guard SpotifyAuthorization.hasCurrentGrant else {
+            throw SpotifyServiceError.scopeUpgradeRequired
+        }
+
+        let response = try await authorizedGET(
+            url: Self.recentlyPlayedURL,
+            clientID: clientID
         )
-        return try await HTTPClient.send(request)
+        if response.1.statusCode == 403 {
+            throw SpotifyServiceError.recentHistoryDenied
+        }
+        guard (200..<300).contains(response.1.statusCode) else {
+            let message = String(data: response.0.prefix(1_024), encoding: .utf8) ?? ""
+            throw HTTPClientError.statusCode(response.1.statusCode, message)
+        }
+
+        let history = try JSONDecoder().decode(SpotifyRecentlyPlayed.self, from: response.0)
+        let candidates = history.items.compactMap { item -> RecentAlbumArtwork? in
+            guard let image = item.track.album.images.max(by: {
+                ($0.width ?? 0) < ($1.width ?? 0)
+            }), let url = URL(string: image.url) else {
+                return nil
+            }
+            return RecentAlbumArtwork(albumID: item.track.album.id, url: url)
+        }
+        return RecentAlbumArtworkSelector.uniqueURLs(from: candidates, limit: limit)
+    }
+
+    private func authorizedGET(
+        url: URL,
+        clientID: String
+    ) async throws -> (Data, HTTPURLResponse) {
+        var token = try await validToken(clientID: clientID)
+        var request = HTTPClient.bearerRequest(url: url, accessToken: token.accessToken)
+        var response = try await HTTPClient.send(request)
+        if response.1.statusCode == 401 {
+            token = try await refreshToken(clientID: clientID, force: true)
+            request = HTTPClient.bearerRequest(url: url, accessToken: token.accessToken)
+            response = try await HTTPClient.send(request)
+        }
+        return response
     }
 
     private func validToken(clientID: String) async throws -> OAuthToken {
@@ -122,6 +207,8 @@ struct SpotifyService {
 enum SpotifyServiceError: LocalizedError {
     case notAuthenticated
     case missingRefreshToken
+    case scopeUpgradeRequired
+    case recentHistoryDenied
 
     var errorDescription: String? {
         switch self {
@@ -129,8 +216,17 @@ enum SpotifyServiceError: LocalizedError {
             return "Spotify is not authenticated."
         case .missingRefreshToken:
             return "Spotify must be connected again."
+        case .scopeUpgradeRequired:
+            return "Reconnect Spotify in the app to grant recent-playback access."
+        case .recentHistoryDenied:
+            return "Spotify denied recent-playback access. Reconnect Spotify and confirm this account is allowlisted."
         }
     }
+}
+
+private struct SpotifyImage: Decodable {
+    let url: String
+    let width: Int?
 }
 
 private struct SpotifyCurrentlyPlaying: Decodable {
@@ -144,15 +240,27 @@ private struct SpotifyCurrentlyPlaying: Decodable {
 
     struct Item: Decodable {
         let album: Album?
-        let images: [Image]?
+        let images: [SpotifyImage]?
     }
 
     struct Album: Decodable {
-        let images: [Image]
+        let images: [SpotifyImage]
+    }
+}
+
+private struct SpotifyRecentlyPlayed: Decodable {
+    let items: [Item]
+
+    struct Item: Decodable {
+        let track: Track
     }
 
-    struct Image: Decodable {
-        let url: String
-        let width: Int?
+    struct Track: Decodable {
+        let album: Album
+    }
+
+    struct Album: Decodable {
+        let id: String
+        let images: [SpotifyImage]
     }
 }

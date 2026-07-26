@@ -140,6 +140,7 @@ enum KeychainStore {
 enum CredentialAccount {
     static let spotifyClientID = "spotify.client-id"
     static let spotifyToken = "spotify.oauth-token"
+    static let spotifyGrantVersion = "spotify.grant-version"
     static let sonosClientID = "sonos.client-id"
     static let sonosClientSecret = "sonos.client-secret"
     static let sonosToken = "sonos.oauth-token"

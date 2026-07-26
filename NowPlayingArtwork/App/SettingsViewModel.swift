@@ -24,9 +24,13 @@ final class SettingsViewModel: ObservableObject {
         sonosClientID = CredentialVault.string(CredentialAccount.sonosClientID) ?? ""
         sonosClientSecret = CredentialVault.string(CredentialAccount.sonosClientSecret) ?? ""
         widgetTapAppURLText = WidgetTapAppSettings.url?.absoluteString ?? ""
-        isSpotifyConnected = CredentialVault.token(CredentialAccount.spotifyToken) != nil
+        let hasSpotifyToken = CredentialVault.token(CredentialAccount.spotifyToken) != nil
+        isSpotifyConnected = hasSpotifyToken && SpotifyAuthorization.hasCurrentGrant
         isSonosConnected = CredentialVault.token(CredentialAccount.sonosToken) != nil
         cachedArtworkData = ArtworkCache.cachedData()
+        if hasSpotifyToken && !SpotifyAuthorization.hasCurrentGrant {
+            statusMessage = "Reconnect Spotify once to enable the recent-albums grid."
+        }
     }
 
     func connectSpotify() async {
@@ -58,6 +62,10 @@ final class SettingsViewModel: ObservableObject {
                 callback,
                 clientID: clientID,
                 verifier: verifier
+            )
+            try CredentialVault.saveString(
+                SpotifyAuthorization.currentGrantVersion,
+                account: CredentialAccount.spotifyGrantVersion
             )
             isSpotifyConnected = true
             statusMessage = "Spotify connected."
@@ -153,6 +161,7 @@ final class SettingsViewModel: ObservableObject {
 
     func disconnectSpotify() {
         CredentialVault.remove(CredentialAccount.spotifyToken)
+        CredentialVault.remove(CredentialAccount.spotifyGrantVersion)
         isSpotifyConnected = false
         statusMessage = "Spotify disconnected."
     }
@@ -174,6 +183,9 @@ final class SettingsViewModel: ObservableObject {
         case .updated:
             cachedArtworkData = ArtworkCache.cachedData()
             statusMessage = "Widget artwork updated."
+        case .updatedRecentGrid:
+            cachedArtworkData = ArtworkCache.cachedData()
+            statusMessage = "Recent-albums grid updated."
         case .noPlayback:
             statusMessage = "Nothing is currently playing."
         case .failed(let message):
@@ -191,7 +203,7 @@ final class SettingsViewModel: ObservableObject {
             URLQueryItem(name: "client_id", value: clientID),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "redirect_uri", value: SharedConfiguration.spotifyRedirectURI),
-            URLQueryItem(name: "scope", value: "user-read-currently-playing user-read-playback-state"),
+            URLQueryItem(name: "scope", value: SpotifyAuthorization.scopes.joined(separator: " ")),
             URLQueryItem(name: "state", value: state),
             URLQueryItem(name: "code_challenge_method", value: "S256"),
             URLQueryItem(name: "code_challenge", value: challenge)

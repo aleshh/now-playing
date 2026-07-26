@@ -13,16 +13,30 @@ struct ArtworkTimelineProvider: TimelineProvider {
     }
 
     func getSnapshot(in context: Context, completion: @escaping (ArtworkEntry) -> Void) {
-        completion(ArtworkEntry(date: Date(), artworkData: ArtworkCache.cachedData()))
+        completion(
+            ArtworkEntry(
+                date: Date(),
+                artworkData: cachedArtwork(for: context.family)
+            )
+        )
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<ArtworkEntry>) -> Void) {
-        let entry = ArtworkEntry(date: Date(), artworkData: ArtworkCache.cachedData())
+        let entry = ArtworkEntry(
+            date: Date(),
+            artworkData: cachedArtwork(for: context.family)
+        )
         completion(
             Timeline(
                 entries: [entry],
                 policy: .after(Date().addingTimeInterval(60 * 60))
             )
+        )
+    }
+
+    private func cachedArtwork(for family: WidgetFamily) -> Data? {
+        ArtworkCache.cachedData(
+            for: family == .systemSmall ? .small : .large
         )
     }
 }
@@ -84,7 +98,7 @@ struct NowPlayingArtworkWidget: Widget {
             NowPlayingArtworkWidgetView(entry: entry)
         }
         .configurationDisplayName("Now Playing Artwork")
-        .description("Tap to refresh artwork from Sonos or Spotify.")
+        .description("Shows current artwork or a grid of recent albums. Tap to refresh.")
         .supportedFamilies([.systemSmall, .systemLarge])
         .contentMarginsDisabled()
     }

@@ -3,6 +3,7 @@ import WidgetKit
 
 enum PlaybackRefreshOutcome: Equatable, Sendable {
     case updated
+    case updatedRecentGrid
     case noPlayback
     case failed(String)
 }
@@ -31,7 +32,17 @@ enum PlaybackRefreshCoordinator {
                 return .failed("Artwork: \(error.localizedDescription)")
             }
         case .fallback:
-            return .noPlayback
+            do {
+                let recentArtworkURLs = try await SpotifyService().recentAlbumArtworkURLs()
+                guard !recentArtworkURLs.isEmpty else {
+                    return .noPlayback
+                }
+                try await ArtworkCache.downloadGridAndStore(from: recentArtworkURLs)
+                WidgetCenter.shared.reloadTimelines(ofKind: SharedConfiguration.widgetKind)
+                return .updatedRecentGrid
+            } catch {
+                return .failed("Recent albums: \(error.localizedDescription)")
+            }
         case .unavailable(let message):
             return .failed(message)
         }

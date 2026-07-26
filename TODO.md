@@ -11,6 +11,7 @@
 - [x] Spotify-only mode enabled with `SONOS_ENABLED = NO`
 - [x] Sonos settings are hidden and Sonos is not queried by the widget
 - [x] Associated Domains entitlement removed until Sonos is enabled
+- [x] Idle artwork adapts by album count and widget size: single cover, 2×2, or large-only 3×3
 
 ## Spotify setup
 
@@ -22,8 +23,13 @@
 
 - [ ] Copy the Spotify client ID. The Spotify client secret is not needed.
 - [ ] Run the main app, enter the client ID, and tap **Connect Spotify**.
+- [ ] If upgrading an existing installation, reconnect Spotify once to grant `user-read-recently-played`.
 - [ ] Start Spotify playback and tap **Refresh Now** in the main app.
 - [ ] Confirm that cached artwork appears.
+- [ ] Stop playback, tap **Refresh Now**, and confirm the recent-albums layout appears.
+- [ ] Verify one recent album fills both widgets.
+- [ ] Verify two through four recent albums use 2×2 in both widgets with unused cells black.
+- [ ] Verify five or more recent albums use 3×3 in large and at most 2×2 in small.
 - [ ] Add both the small and large **Now Playing Artwork** widgets.
 - [ ] Tap each widget and confirm that the whole square is tappable and the artwork refreshes.
 
@@ -96,7 +102,7 @@ The Associated Domains capability is intentionally not needed in Spotify-only mo
 - [ ] Enter an installed app URL in the main app, for example `spotify://` or `music://`.
 - [ ] Tap **Save Widget Tap App**.
 - [ ] Tap the widget during and outside Spotify playback and confirm that the configured app opens.
-- [ ] Confirm that the last successful artwork remains visible when nothing is playing.
+- [ ] Confirm that the adaptive recent-albums layout appears when nothing is playing and that a failed refresh preserves the last successful image.
 
 On iOS 18.2+, the configured app opens directly after the artwork refresh. On iOS 17–18.1, the host app briefly opens before forwarding to it.
 

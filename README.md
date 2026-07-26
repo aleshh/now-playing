@@ -1,8 +1,8 @@
 # Now Playing Artwork
 
-An iOS 17+ SwiftUI app with small and large square widgets. The widget displays the most recently cached album artwork edge-to-edge. Tapping it checks Spotify for active playback, caches newer artwork when available, reloads the widget, and opens a configured app such as Spotify.
+An iOS 17+ SwiftUI app with small and large square widgets. During active playback, the widget displays the current album artwork edge-to-edge. When playback is idle, it adapts its layout to the available recent albums and widget size. Tapping the widget refreshes its artwork and opens a configured app such as Spotify.
 
-If playback is idle or a refresh fails, the last successful artwork remains visible. Before the first successful refresh, the widget shows a dark music-note placeholder.
+If a refresh fails, the last successful artwork remains visible. Before the first successful refresh, the widget shows a dark music-note placeholder.
 
 > The project is currently configured for Spotify only. Sonos is disabled and its future setup is documented in [TODO.md](TODO.md).
 
@@ -92,7 +92,7 @@ Apple references: [Adding capabilities](https://developer.apple.com/documentatio
 
 The redirect URI must match exactly. It is already registered as a URL scheme in the iOS project and should not be changed unless you also change the Swift code, app Info plist, and Spotify dashboard setting.
 
-Spotify references: [creating and configuring an app](https://developer.spotify.com/documentation/web-api/concepts/apps), [Authorization Code with PKCE](https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow), and [currently playing endpoint](https://developer.spotify.com/documentation/web-api/reference/get-the-users-currently-playing-track).
+Spotify references: [creating and configuring an app](https://developer.spotify.com/documentation/web-api/concepts/apps), [Authorization Code with PKCE](https://developer.spotify.com/documentation/web-api/tutorials/code-pkce-flow), [currently playing endpoint](https://developer.spotify.com/documentation/web-api/reference/get-the-users-currently-playing-track), and [recently played endpoint](https://developer.spotify.com/documentation/web-api/reference/get-recently-played).
 
 ### Additional Spotify users
 
@@ -122,7 +122,9 @@ See [Spotify quota modes](https://developer.spotify.com/documentation/web-api/co
 8. Start playing a track in Spotify.
 9. Return to Now Playing and tap **Refresh Now**. The app should show the cached artwork.
 
-The app requests only `user-read-currently-playing` and `user-read-playback-state`.
+The app requests `user-read-currently-playing`, `user-read-playback-state`, and `user-read-recently-played`.
+
+If you installed a version of this project from before the recent-albums grid was added, open the updated app and connect Spotify again once. The new OAuth grant is required before the app can read recent playback history.
 
 ## 5. Add and test the widget
 
@@ -132,6 +134,14 @@ The app requests only `user-read-currently-playing` and `user-read-playback-stat
 4. Tap the widget.
 
 The tap refreshes the cached artwork and then opens Spotify. On iOS 18.2 or later, Spotify opens directly after the intent finishes. On iOS 17 through 18.1, the Now Playing host app briefly opens before forwarding to Spotify.
+
+With active playback, the refreshed widget shows the current album. With idle playback, it downloads the most recent Spotify history, removes repeated albums while preserving recency, and lays out covers from newest to oldest starting at the top-left:
+
+- One album fills either widget normally.
+- Two through four albums use a 2×2 grid in either widget.
+- Five through nine albums use a 3×3 grid in the large widget.
+- The small widget always uses at most the four most recent albums in a 2×2 grid.
+- Unused grid cells are plain black with no placeholder artwork.
 
 The widget is user-driven: it refreshes when tapped and also rereads the cache when WidgetKit requests a new timeline. iOS ultimately controls widget refresh scheduling.
 
@@ -149,6 +159,16 @@ Do not add a trailing slash or change capitalization.
 
 - Confirm the Spotify developer-app owner still has Premium.
 - If using a different Spotify account, add it under **Settings → Users Management** in the Spotify Developer Dashboard.
+- Disconnect and reconnect Spotify to grant `user-read-recently-played`.
+
+### The recent-albums grid does not appear
+
+- Stop or pause active playback, then use **Refresh Now** in the main app.
+- Reconnect Spotify once if this installation was authorized before the grid feature was added.
+- Spotify's recently played endpoint contains tracks, not podcast episodes.
+- One album should fill the widget; two through four should use 2×2.
+- With five or more albums, the large widget should use 3×3 while the small widget remains 2×2.
+- Unused cells should remain plain black.
 
 ### The widget remains on the dark placeholder
 
@@ -175,7 +195,7 @@ Confirm every bundle identifier and App Group is unique and registered to your o
 ## Storage and privacy
 
 - Spotify access and refresh tokens and the client ID are stored in the shared Keychain.
-- Cached artwork and the widget-tap URL are stored in the shared App Group container.
+- Separate small and large cached artwork renders, plus the widget-tap URL, are stored in the shared App Group container.
 - The client secret is never requested or stored.
 - Artwork downloads are validated, limited to 20 MB, and written atomically.
 - Disconnecting Spotify removes its OAuth token. It does not delete the most recently cached artwork.
@@ -183,6 +203,7 @@ Confirm every bundle identifier and App Group is unique and registered to your o
 ## Current limitations
 
 - Spotify development mode is limited to five allowlisted users and currently requires the developer-app owner to have Premium.
+- Spotify's recently played endpoint does not include podcast episodes.
 - A public Spotify-backed release requires separate Spotify quota approval and policy work; see [TODO.md](TODO.md#possible-app-store-release).
 - Sonos support remains disabled.
 
