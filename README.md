@@ -1,6 +1,6 @@
 # Now Playing Artwork
 
-An iOS 17+ SwiftUI app with small and large square widgets. During active playback, the widget displays the current album artwork edge-to-edge. When playback is idle, it adapts its layout to the available recent albums and widget size. Tapping the widget refreshes its artwork and opens a configured app such as Spotify.
+An iOS 17+ SwiftUI app with small and large square widgets. During active playback, the widget displays the current album artwork edge-to-edge. When playback is idle, it adapts its layout to the available recent albums and widget size. Tapping a visible album refreshes the widget and opens that album in Spotify.
 
 If a refresh fails, the last successful artwork remains visible. Before the first successful refresh, the widget shows a dark music-note placeholder.
 
@@ -133,7 +133,9 @@ If you installed a version of this project from before the recent-albums grid wa
 3. Add either the small or large square widget.
 4. Tap the widget.
 
-The tap refreshes the cached artwork and then opens Spotify. On iOS 18.2 or later, Spotify opens directly after the intent finishes. On iOS 17 through 18.1, the Now Playing host app briefly opens before forwarding to Spotify.
+The tap refreshes the cached artwork and then opens Spotify. When a recent-albums layout is visible, each cover is an independent tap target that opens that specific album. Tapping unused black grid space uses the configured **Widget Tap App** destination instead.
+
+Album links use `https://open.spotify.com/album/...` universal URLs so iOS can open the Spotify app when installed and fall back to the website otherwise. On iOS 18.2 or later, Spotify opens directly after the intent finishes. On iOS 17 through 18.1, the Now Playing host app briefly opens before forwarding to Spotify.
 
 With active playback, the refreshed widget shows the current album. With idle playback, it downloads the most recent Spotify history, removes repeated albums while preserving recency, and lays out covers from newest to oldest starting at the top-left:
 
@@ -184,6 +186,10 @@ Do not add a trailing slash or change capitalization.
 - Tap **Save Widget Tap App** after entering it.
 - Test on a physical device; the Spotify app normally is not installed in the simulator.
 
+### A grid cover opens Spotify's website
+
+The cover uses Spotify's universal album link. Confirm the Spotify app is installed and that iOS is allowed to open `open.spotify.com` links in Spotify.
+
 ### Spotify disconnects or Keychain access fails
 
 Confirm both app and widget targets have Keychain Sharing enabled with the same `SHARED_KEYCHAIN_GROUP` value and are signed by the same Team.
@@ -195,7 +201,7 @@ Confirm every bundle identifier and App Group is unique and registered to your o
 ## Storage and privacy
 
 - Spotify access and refresh tokens and the client ID are stored in the shared Keychain.
-- Separate small and large cached artwork renders, plus the widget-tap URL, are stored in the shared App Group container.
+- Separate small and large cached artwork renders, their per-cell Spotify album links, and the widget-tap URL are stored in the shared App Group container.
 - The client secret is never requested or stored.
 - Artwork downloads are validated, limited to 20 MB, and written atomically.
 - Disconnecting Spotify removes its OAuth token. It does not delete the most recently cached artwork.

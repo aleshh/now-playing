@@ -48,28 +48,31 @@ final class PlaybackSelectionTests: XCTestCase {
         let firstURL = URL(string: "https://example.com/first.jpg")!
         let duplicateURL = URL(string: "https://example.com/first-again.jpg")!
         let secondURL = URL(string: "https://example.com/second.jpg")!
+        let first = recentAlbum(id: "first", artworkURL: firstURL)
+        let duplicate = recentAlbum(id: "first", artworkURL: duplicateURL)
+        let second = recentAlbum(id: "second", artworkURL: secondURL)
         let candidates = [
-            RecentAlbumArtwork(albumID: "first", url: firstURL),
-            RecentAlbumArtwork(albumID: "first", url: duplicateURL),
-            RecentAlbumArtwork(albumID: "second", url: secondURL)
+            first,
+            duplicate,
+            second
         ]
 
         XCTAssertEqual(
-            RecentAlbumArtworkSelector.uniqueURLs(from: candidates, limit: 9),
-            [firstURL, secondURL]
+            RecentAlbumArtworkSelector.uniqueAlbums(from: candidates, limit: 9),
+            [first, second]
         )
     }
 
     func testRecentAlbumSelectionHonorsGridLimit() {
         let candidates = (0..<12).map { index in
-            RecentAlbumArtwork(
-                albumID: "album-\(index)",
-                url: URL(string: "https://example.com/\(index).jpg")!
+            recentAlbum(
+                id: "album-\(index)",
+                artworkURL: URL(string: "https://example.com/\(index).jpg")!
             )
         }
 
         XCTAssertEqual(
-            RecentAlbumArtworkSelector.uniqueURLs(from: candidates, limit: 9).count,
+            RecentAlbumArtworkSelector.uniqueAlbums(from: candidates, limit: 9).count,
             9
         )
     }
@@ -109,5 +112,17 @@ final class PlaybackSelectionTests: XCTestCase {
                 .grid(columns: 3, maximumItems: 9)
             )
         }
+    }
+
+    private func recentAlbum(
+        id: String,
+        artworkURL: URL
+    ) -> RecentAlbumArtwork {
+        RecentAlbumArtwork(
+            albumID: id,
+            albumName: "Album \(id)",
+            artworkURL: artworkURL,
+            spotifyURL: URL(string: "https://open.spotify.com/album/\(id)")!
+        )
     }
 }

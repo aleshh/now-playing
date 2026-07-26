@@ -33,11 +33,11 @@ enum PlaybackRefreshCoordinator {
             }
         case .fallback:
             do {
-                let recentArtworkURLs = try await SpotifyService().recentAlbumArtworkURLs()
-                guard !recentArtworkURLs.isEmpty else {
+                let recentAlbums = try await SpotifyService().recentAlbumArtwork()
+                guard !recentAlbums.isEmpty else {
                     return .noPlayback
                 }
-                try await ArtworkCache.downloadGridAndStore(from: recentArtworkURLs)
+                try await ArtworkCache.downloadGridAndStore(from: recentAlbums)
                 WidgetCenter.shared.reloadTimelines(ofKind: SharedConfiguration.widgetKind)
                 return .updatedRecentGrid
             } catch {

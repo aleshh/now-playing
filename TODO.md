@@ -12,6 +12,7 @@
 - [x] Sonos settings are hidden and Sonos is not queried by the widget
 - [x] Associated Domains entitlement removed until Sonos is enabled
 - [x] Idle artwork adapts by album count and widget size: single cover, 2×2, or large-only 3×3
+- [x] Each visible recent-album cell opens that album in Spotify
 
 ## Spotify setup
 
@@ -30,6 +31,8 @@
 - [ ] Verify one recent album fills both widgets.
 - [ ] Verify two through four recent albums use 2×2 in both widgets with unused cells black.
 - [ ] Verify five or more recent albums use 3×3 in large and at most 2×2 in small.
+- [ ] Tap several different grid cells and confirm each opens its corresponding Spotify album.
+- [ ] Tap unused black grid space and confirm it opens the configured Widget Tap App.
 - [ ] Add both the small and large **Now Playing Artwork** widgets.
 - [ ] Tap each widget and confirm that the whole square is tappable and the artwork refreshes.
 

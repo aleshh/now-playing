@@ -29,6 +29,16 @@ enum ArtworkCacheVariant: CaseIterable {
     case large
 }
 
+struct CachedArtworkLink: Codable, Equatable, Sendable {
+    let urlString: String
+    let accessibilityLabel: String
+}
+
+struct CachedArtworkLinkLayout: Codable, Equatable, Sendable {
+    let columns: Int
+    let links: [CachedArtworkLink]
+}
+
 enum RecentArtworkLayout: Equatable {
     case single
     case grid(columns: Int, maximumItems: Int)
@@ -62,6 +72,8 @@ enum ArtworkCache {
     private static let legacyFilename = "active-album-artwork"
     private static let smallFilename = "widget-artwork-small"
     private static let largeFilename = "widget-artwork-large"
+    private static let smallLinksFilename = "widget-artwork-small-links.json"
+    private static let largeLinksFilename = "widget-artwork-large-links.json"
     private static let maximumArtworkSize = 20 * 1_024 * 1_024
     private static let gridDimension = 900
     private static let gridCount = 9
@@ -75,24 +87,44 @@ enum ArtworkCache {
             ?? readData(from: cacheURL(filename: legacyFilename))
     }
 
+    static func cachedLinkLayout(
+        for variant: ArtworkCacheVariant
+    ) -> CachedArtworkLinkLayout? {
+        guard let data = readData(from: cacheURL(filename: linksFilename(for: variant))),
+              let layout = try? JSONDecoder().decode(CachedArtworkLinkLayout.self, from: data),
+              (1...3).contains(layout.columns),
+              !layout.links.isEmpty,
+              layout.links.count <= layout.columns * layout.columns
+        else {
+            return nil
+        }
+        return layout
+    }
+
     static func downloadAndStore(from url: URL) async throws {
         let data = try await downloadValidatedImageData(from: url)
         for variant in ArtworkCacheVariant.allCases {
+            try storeLinkLayout(
+                CachedArtworkLinkLayout(columns: 1, links: []),
+                for: variant
+            )
             try store(data, for: variant)
         }
         try store(data, filename: legacyFilename)
     }
 
-    static func downloadGridAndStore(from urls: [URL]) async throws {
-        let selectedURLs = Array(urls.prefix(gridCount))
-        var downloadedData = [Data?](repeating: nil, count: selectedURLs.count)
+    static func downloadGridAndStore(
+        from albums: [RecentAlbumArtwork]
+    ) async throws {
+        let selectedAlbums = Array(albums.prefix(gridCount))
+        var downloadedData = [Data?](repeating: nil, count: selectedAlbums.count)
 
         await withTaskGroup(of: (Int, Data?).self) { group in
-            for (index, url) in selectedURLs.enumerated() {
+            for (index, album) in selectedAlbums.enumerated() {
                 group.addTask {
                     (
                         index,
-                        try? await downloadValidatedImageData(from: url)
+                        try? await downloadValidatedImageData(from: album.artworkURL)
                     )
                 }
             }
@@ -102,27 +134,34 @@ enum ArtworkCache {
             }
         }
 
-        let artwork = downloadedData.compactMap { data -> (data: Data, image: UIImage)? in
+        let artwork = downloadedData.enumerated().compactMap {
+            index,
+            data -> (data: Data, image: UIImage, album: RecentAlbumArtwork)? in
             guard let data, let image = UIImage(data: data) else {
                 return nil
             }
-            return (data, image)
+            return (data, image, selectedAlbums[index])
         }
         guard !artwork.isEmpty else {
             throw ArtworkCacheError.noGridImages
         }
 
-        let smallData = try presentationData(from: artwork, variant: .small)
-        let largeData = try presentationData(from: artwork, variant: .large)
-        try store(smallData, for: .small)
-        try store(largeData, for: .large)
-        try store(largeData, filename: legacyFilename)
+        let smallPresentation = try presentation(from: artwork, variant: .small)
+        let largePresentation = try presentation(from: artwork, variant: .large)
+        try store(smallPresentation.data, for: .small)
+        try storeLinkLayout(smallPresentation.linkLayout, for: .small)
+        try store(largePresentation.data, for: .large)
+        try storeLinkLayout(largePresentation.linkLayout, for: .large)
+        try store(largePresentation.data, filename: legacyFilename)
     }
 
-    private static func presentationData(
-        from artwork: [(data: Data, image: UIImage)],
+    private static func presentation(
+        from artwork: [(data: Data, image: UIImage, album: RecentAlbumArtwork)],
         variant: ArtworkCacheVariant
-    ) throws -> Data {
+    ) throws -> (
+        data: Data,
+        linkLayout: CachedArtworkLinkLayout
+    ) {
         guard let layout = RecentArtworkLayoutSelector.layout(
             for: artwork.count,
             variant: variant
@@ -132,13 +171,35 @@ enum ArtworkCache {
 
         switch layout {
         case .single:
-            return artwork[0].data
+            return (
+                artwork[0].data,
+                CachedArtworkLinkLayout(
+                    columns: 1,
+                    links: [cachedLink(for: artwork[0].album)]
+                )
+            )
         case .grid(let columns, let maximumItems):
-            return try gridData(
-                from: artwork.prefix(maximumItems).map { $0.image },
-                columns: columns
+            let selectedArtwork = Array(artwork.prefix(maximumItems))
+            return (
+                try gridData(
+                    from: selectedArtwork.map { $0.image },
+                    columns: columns
+                ),
+                CachedArtworkLinkLayout(
+                    columns: columns,
+                    links: selectedArtwork.map { cachedLink(for: $0.album) }
+                )
             )
         }
+    }
+
+    private static func cachedLink(
+        for album: RecentAlbumArtwork
+    ) -> CachedArtworkLink {
+        CachedArtworkLink(
+            urlString: album.spotifyURL.absoluteString,
+            accessibilityLabel: "Open \(album.albumName) in Spotify"
+        )
     }
 
     private static func gridData(
@@ -220,6 +281,14 @@ enum ArtworkCache {
         )
     }
 
+    private static func storeLinkLayout(
+        _ layout: CachedArtworkLinkLayout,
+        for variant: ArtworkCacheVariant
+    ) throws {
+        let data = try JSONEncoder().encode(layout)
+        try store(data, filename: linksFilename(for: variant))
+    }
+
     private static func drawAspectFill(
         _ image: UIImage,
         in cell: CGRect,
@@ -258,6 +327,15 @@ enum ArtworkCache {
             return smallFilename
         case .large:
             return largeFilename
+        }
+    }
+
+    private static func linksFilename(for variant: ArtworkCacheVariant) -> String {
+        switch variant {
+        case .small:
+            return smallLinksFilename
+        case .large:
+            return largeLinksFilename
         }
     }
 

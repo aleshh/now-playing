@@ -15,23 +15,25 @@ enum SpotifyAuthorization {
 
 struct RecentAlbumArtwork: Equatable, Sendable {
     let albumID: String
-    let url: URL
+    let albumName: String
+    let artworkURL: URL
+    let spotifyURL: URL
 }
 
 enum RecentAlbumArtworkSelector {
-    static func uniqueURLs(
+    static func uniqueAlbums(
         from candidates: [RecentAlbumArtwork],
         limit: Int
-    ) -> [URL] {
+    ) -> [RecentAlbumArtwork] {
         guard limit > 0 else {
             return []
         }
 
         var seenAlbumIDs = Set<String>()
-        var result: [URL] = []
+        var result: [RecentAlbumArtwork] = []
 
         for candidate in candidates where seenAlbumIDs.insert(candidate.albumID).inserted {
-            result.append(candidate.url)
+            result.append(candidate)
             if result.count == limit {
                 break
             }
@@ -119,7 +121,7 @@ struct SpotifyService {
         }
     }
 
-    func recentAlbumArtworkURLs(limit: Int = 9) async throws -> [URL] {
+    func recentAlbumArtwork(limit: Int = 9) async throws -> [RecentAlbumArtwork] {
         guard let clientID = CredentialVault.string(CredentialAccount.spotifyClientID),
               CredentialVault.token(CredentialAccount.spotifyToken) != nil
         else {
@@ -145,12 +147,21 @@ struct SpotifyService {
         let candidates = history.items.compactMap { item -> RecentAlbumArtwork? in
             guard let image = item.track.album.images.max(by: {
                 ($0.width ?? 0) < ($1.width ?? 0)
-            }), let url = URL(string: image.url) else {
+            }),
+            let artworkURL = URL(string: image.url),
+            let spotifyURL = URL(
+                string: "https://open.spotify.com/album/\(item.track.album.id)"
+            ) else {
                 return nil
             }
-            return RecentAlbumArtwork(albumID: item.track.album.id, url: url)
+            return RecentAlbumArtwork(
+                albumID: item.track.album.id,
+                albumName: item.track.album.name,
+                artworkURL: artworkURL,
+                spotifyURL: spotifyURL
+            )
         }
-        return RecentAlbumArtworkSelector.uniqueURLs(from: candidates, limit: limit)
+        return RecentAlbumArtworkSelector.uniqueAlbums(from: candidates, limit: limit)
     }
 
     private func authorizedGET(
@@ -261,6 +272,7 @@ private struct SpotifyRecentlyPlayed: Decodable {
 
     struct Album: Decodable {
         let id: String
+        let name: String
         let images: [SpotifyImage]
     }
 }
