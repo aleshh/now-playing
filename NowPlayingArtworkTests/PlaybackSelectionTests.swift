@@ -77,6 +77,18 @@ final class PlaybackSelectionTests: XCTestCase {
         )
     }
 
+    func testRecentGridIncludesOnlySpotifyAlbumReleases() {
+        XCTAssertTrue(
+            RecentAlbumArtworkSelector.includes(releaseType: "album")
+        )
+        XCTAssertFalse(
+            RecentAlbumArtworkSelector.includes(releaseType: "single")
+        )
+        XCTAssertFalse(
+            RecentAlbumArtworkSelector.includes(releaseType: "compilation")
+        )
+    }
+
     func testOneRecentAlbumUsesTheFullWidgetInBothSizes() {
         XCTAssertEqual(
             RecentArtworkLayoutSelector.layout(for: 1, variant: .small),

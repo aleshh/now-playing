@@ -21,6 +21,10 @@ struct RecentAlbumArtwork: Equatable, Sendable {
 }
 
 enum RecentAlbumArtworkSelector {
+    static func includes(releaseType: String) -> Bool {
+        releaseType == "album"
+    }
+
     static func uniqueAlbums(
         from candidates: [RecentAlbumArtwork],
         limit: Int
@@ -145,7 +149,10 @@ struct SpotifyService {
 
         let history = try JSONDecoder().decode(SpotifyRecentlyPlayed.self, from: response.0)
         let candidates = history.items.compactMap { item -> RecentAlbumArtwork? in
-            guard let image = item.track.album.images.max(by: {
+            guard RecentAlbumArtworkSelector.includes(
+                releaseType: item.track.album.albumType
+            ),
+            let image = item.track.album.images.max(by: {
                 ($0.width ?? 0) < ($1.width ?? 0)
             }),
             let artworkURL = URL(string: image.url),
@@ -273,6 +280,14 @@ private struct SpotifyRecentlyPlayed: Decodable {
     struct Album: Decodable {
         let id: String
         let name: String
+        let albumType: String
         let images: [SpotifyImage]
+
+        enum CodingKeys: String, CodingKey {
+            case id
+            case name
+            case albumType = "album_type"
+            case images
+        }
     }
 }

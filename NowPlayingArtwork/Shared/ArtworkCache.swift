@@ -77,6 +77,11 @@ enum ArtworkCache {
     private static let maximumArtworkSize = 20 * 1_024 * 1_024
     private static let gridDimension = 900
     private static let gridCount = 9
+    private static let gridGutter = 10
+
+    static var gridGutterFraction: CGFloat {
+        CGFloat(gridGutter) / CGFloat(gridDimension)
+    }
 
     static func cachedData() -> Data? {
         cachedData(for: .large)
@@ -207,7 +212,10 @@ enum ArtworkCache {
         columns: Int
     ) throws -> Data {
         let dimension = CGFloat(gridDimension)
-        let cellDimension = dimension / CGFloat(columns)
+        let gutter = CGFloat(gridGutter)
+        let cellDimension = (
+            dimension - gutter * CGFloat(columns + 1)
+        ) / CGFloat(columns)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
         format.opaque = true
@@ -226,8 +234,8 @@ enum ArtworkCache {
                 let row = index / columns
                 let column = index % columns
                 let cell = CGRect(
-                    x: CGFloat(column) * cellDimension,
-                    y: CGFloat(row) * cellDimension,
+                    x: gutter + CGFloat(column) * (cellDimension + gutter),
+                    y: gutter + CGFloat(row) * (cellDimension + gutter),
                     width: cellDimension,
                     height: cellDimension
                 )
@@ -235,7 +243,7 @@ enum ArtworkCache {
             }
         }
 
-        guard let data = gridImage.jpegData(compressionQuality: 0.9) else {
+        guard let data = gridImage.pngData() else {
             throw ArtworkCacheError.invalidImage
         }
         return data

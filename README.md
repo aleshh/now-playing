@@ -137,12 +137,13 @@ The tap refreshes the cached artwork and then opens Spotify. When a recent-album
 
 Album links use `https://open.spotify.com/album/...` universal URLs so iOS can open the Spotify app when installed and fall back to the website otherwise. On iOS 18.2 or later, Spotify opens directly after the intent finishes. On iOS 17 through 18.1, the Now Playing host app briefly opens before forwarding to Spotify.
 
-With active playback, the refreshed widget shows the current album. With idle playback, it downloads the most recent Spotify history, removes repeated albums while preserving recency, and lays out covers from newest to oldest starting at the top-left:
+With active playback, the refreshed widget shows the current album. With idle playback, it downloads the most recent Spotify history, keeps only releases Spotify classifies as albums, removes repeated albums while preserving recency, and lays out covers from newest to oldest starting at the top-left:
 
 - One album fills either widget normally.
 - Two through four albums use a 2×2 grid in either widget.
 - Five through nine albums use a 3×3 grid in the large widget.
 - The small widget always uses at most the four most recent albums in a 2×2 grid.
+- Grid covers have thin black gutters and a matching black outer inset.
 - Unused grid cells are plain black with no placeholder artwork.
 
 The widget is user-driven: it refreshes when tapped and also rereads the cache when WidgetKit requests a new timeline. iOS ultimately controls widget refresh scheduling.
@@ -168,6 +169,7 @@ Do not add a trailing slash or change capitalization.
 - Stop or pause active playback, then use **Refresh Now** in the main app.
 - Reconnect Spotify once if this installation was authorized before the grid feature was added.
 - Spotify's recently played endpoint contains tracks, not podcast episodes.
+- Releases Spotify classifies as singles or compilations are intentionally omitted.
 - One album should fill the widget; two through four should use 2×2.
 - With five or more albums, the large widget should use 3×3 while the small widget remains 2×2.
 - Unused cells should remain plain black.

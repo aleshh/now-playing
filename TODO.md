@@ -13,6 +13,8 @@
 - [x] Associated Domains entitlement removed until Sonos is enabled
 - [x] Idle artwork adapts by album count and widget size: single cover, 2×2, or large-only 3×3
 - [x] Each visible recent-album cell opens that album in Spotify
+- [x] Grid layouts use thin black gutters and an outer black inset
+- [x] Recent history includes only releases Spotify classifies as albums
 
 ## Spotify setup
 
@@ -31,6 +33,8 @@
 - [ ] Verify one recent album fills both widgets.
 - [ ] Verify two through four recent albums use 2×2 in both widgets with unused cells black.
 - [ ] Verify five or more recent albums use 3×3 in large and at most 2×2 in small.
+- [ ] Confirm grid covers have thin black gutters and a black outer inset.
+- [ ] Confirm Spotify singles and compilations do not appear in the recent-albums grid.
 - [ ] Tap several different grid cells and confirm each opens its corresponding Spotify album.
 - [ ] Tap unused black grid space and confirm it opens the configured Widget Tap App.
 - [ ] Add both the small and large **Now Playing Artwork** widgets.

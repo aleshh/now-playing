@@ -85,16 +85,31 @@ struct NowPlayingArtworkWidgetView: View {
         _ layout: CachedArtworkLinkLayout
     ) -> some View {
         GeometryReader { geometry in
-            let cellWidth = geometry.size.width / CGFloat(layout.columns)
-            let cellHeight = geometry.size.height / CGFloat(layout.columns)
+            let imageDimension = max(geometry.size.width, geometry.size.height)
+            let imageOrigin = CGPoint(
+                x: (geometry.size.width - imageDimension) / 2,
+                y: (geometry.size.height - imageDimension) / 2
+            )
+            let gutter = layout.columns > 1
+                ? imageDimension * ArtworkCache.gridGutterFraction
+                : 0
+            let cellDimension = (
+                imageDimension - gutter * CGFloat(layout.columns + 1)
+            ) / CGFloat(layout.columns)
 
             ZStack(alignment: .topLeading) {
                 ForEach(Array(layout.links.enumerated()), id: \.offset) { index, link in
                     albumButton(link)
-                        .frame(width: cellWidth, height: cellHeight)
+                        .frame(width: cellDimension, height: cellDimension)
                         .offset(
-                            x: CGFloat(index % layout.columns) * cellWidth,
-                            y: CGFloat(index / layout.columns) * cellHeight
+                            x: imageOrigin.x
+                                + gutter
+                                + CGFloat(index % layout.columns)
+                                * (cellDimension + gutter),
+                            y: imageOrigin.y
+                                + gutter
+                                + CGFloat(index / layout.columns)
+                                * (cellDimension + gutter)
                         )
                 }
             }
