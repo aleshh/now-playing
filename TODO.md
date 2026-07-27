@@ -15,6 +15,7 @@
 - [x] Each visible recent-album cell opens that album in Spotify
 - [x] Grid layouts use rounded covers, black gutters, and a container-relative outer inset
 - [x] Recent history includes only releases Spotify classifies as albums
+- [x] Grid album taps open only when the refreshed playback status remains idle
 
 ## Spotify setup
 
@@ -36,6 +37,7 @@
 - [ ] Confirm grid covers are subtly rounded and the outer corners follow the widget shape.
 - [ ] Confirm Spotify singles and compilations do not appear in the recent-albums grid.
 - [ ] Tap several different grid cells and confirm each opens its corresponding Spotify album.
+- [ ] While a grid is visible, start playback and tap an old grid cover; confirm the widget updates to current artwork without opening the old album.
 - [ ] Tap unused black grid space and confirm it opens the configured Widget Tap App.
 - [ ] Add both the small and large **Now Playing Artwork** widgets.
 - [ ] Tap each widget and confirm that the whole square is tappable and the artwork refreshes.
@@ -192,8 +194,8 @@ The current implementation stores the user-supplied Sonos secret in the shared K
 
 ## Notes
 
-- The configured widget-tap app opens even when playback is idle or the artwork refresh fails.
-- Idle playback and refresh failures leave the most recently cached artwork unchanged.
+- Default widget taps use the configured widget-tap app after refreshing; album-cell taps open their album only when playback remains idle.
+- Idle playback updates the recent-albums grid; refresh failures leave the most recently cached artwork unchanged.
 - Artwork downloads are validated, capped at 20 MB, and written atomically to the App Group.
 - OAuth credentials and tokens are stored in the shared Keychain rather than UserDefaults.
 - The widget supports the square system-small and system-large families.

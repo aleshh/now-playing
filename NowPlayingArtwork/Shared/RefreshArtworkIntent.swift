@@ -21,10 +21,11 @@ struct RefreshArtworkIntent: AppIntent {
     }
 
     func perform() async throws -> some IntentResult {
+        let outcome = await PlaybackRefreshCoordinator.refresh()
         let destinationURL = WidgetTapDestination.openIntentURL(
-            albumURLString: albumURLString
+            albumURLString: albumURLString,
+            after: outcome
         )
-        _ = await PlaybackRefreshCoordinator.refresh()
 
         if let destinationURL {
             return .result(opensIntent: OpenURLIntent(destinationURL))
@@ -52,10 +53,11 @@ struct LegacyRefreshArtworkIntent: AppIntent {
     }
 
     func perform() async throws -> some IntentResult {
+        let outcome = await PlaybackRefreshCoordinator.refresh()
         let destinationURL = WidgetTapDestination.legacyURL(
-            albumURLString: albumURLString
+            albumURLString: albumURLString,
+            after: outcome
         )
-        _ = await PlaybackRefreshCoordinator.refresh()
         if let destinationURL {
             PendingWidgetTapURLStore.put(destinationURL)
         }
@@ -66,9 +68,12 @@ struct LegacyRefreshArtworkIntent: AppIntent {
 private enum WidgetTapDestination {
     private static let spotifyHomeURL = URL(string: "https://open.spotify.com/")!
 
-    static func openIntentURL(albumURLString: String?) -> URL? {
+    static func openIntentURL(
+        albumURLString: String?,
+        after outcome: PlaybackRefreshOutcome
+    ) -> URL? {
         if let albumURL = spotifyAlbumURL(from: albumURLString) {
-            return albumURL
+            return outcome.confirmsNoActivePlayback ? albumURL : nil
         }
         guard let configuredURL = WidgetTapAppSettings.url else {
             return nil
@@ -82,8 +87,14 @@ private enum WidgetTapDestination {
         return configuredURL
     }
 
-    static func legacyURL(albumURLString: String?) -> URL? {
-        spotifyAlbumURL(from: albumURLString) ?? WidgetTapAppSettings.url
+    static func legacyURL(
+        albumURLString: String?,
+        after outcome: PlaybackRefreshOutcome
+    ) -> URL? {
+        if let albumURL = spotifyAlbumURL(from: albumURLString) {
+            return outcome.confirmsNoActivePlayback ? albumURL : nil
+        }
+        return WidgetTapAppSettings.url
     }
 
     private static func spotifyAlbumURL(from value: String?) -> URL? {

@@ -1,6 +1,6 @@
 # Now Playing Artwork
 
-An iOS 17+ SwiftUI app with small and large square widgets. During active playback, the widget displays the current album artwork edge-to-edge. When playback is idle, it adapts its layout to the available recent albums and widget size. Tapping a visible album refreshes the widget and opens that album in Spotify.
+An iOS 17+ SwiftUI app with small and large square widgets. During active playback, the widget displays the current album artwork edge-to-edge. When playback is idle, it adapts its layout to the available recent albums and widget size. Tapping a visible album refreshes playback status first, then opens that album only if playback remains idle.
 
 If a refresh fails, the last successful artwork remains visible. Before the first successful refresh, the widget shows a dark music-note placeholder.
 
@@ -133,7 +133,7 @@ If you installed a version of this project from before the recent-albums grid wa
 3. Add either the small or large square widget.
 4. Tap the widget.
 
-The tap refreshes the cached artwork and then opens Spotify. When a recent-albums layout is visible, each cover is an independent tap target that opens that specific album. Tapping unused black grid space uses the configured **Widget Tap App** destination instead.
+Every tap checks playback and refreshes the cached widget first. When a recent-albums layout is visible, each cover is an independent tap target: it opens that album only if the refresh confirms playback is still idle. If playback started since the grid appeared, the tap replaces the grid with the current artwork and does not open the previously displayed album. Tapping unused black grid space uses the configured **Widget Tap App** destination instead.
 
 Album links use `https://open.spotify.com/album/...` universal URLs so iOS can open the Spotify app when installed and fall back to the website otherwise. On iOS 18.2 or later, Spotify opens directly after the intent finishes. On iOS 17 through 18.1, the Now Playing host app briefly opens before forwarding to Spotify.
 

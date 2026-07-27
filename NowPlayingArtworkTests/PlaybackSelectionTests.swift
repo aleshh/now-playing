@@ -126,6 +126,21 @@ final class PlaybackSelectionTests: XCTestCase {
         }
     }
 
+    func testAlbumTapOpensOnlyAfterRefreshConfirmsIdlePlayback() {
+        XCTAssertTrue(
+            PlaybackRefreshOutcome.updatedRecentGrid.confirmsNoActivePlayback
+        )
+        XCTAssertTrue(
+            PlaybackRefreshOutcome.noPlayback.confirmsNoActivePlayback
+        )
+        XCTAssertFalse(
+            PlaybackRefreshOutcome.updated.confirmsNoActivePlayback
+        )
+        XCTAssertFalse(
+            PlaybackRefreshOutcome.failed("offline").confirmsNoActivePlayback
+        )
+    }
+
     private func recentAlbum(
         id: String,
         artworkURL: URL

@@ -6,6 +6,15 @@ enum PlaybackRefreshOutcome: Equatable, Sendable {
     case updatedRecentGrid
     case noPlayback
     case failed(String)
+
+    var confirmsNoActivePlayback: Bool {
+        switch self {
+        case .updatedRecentGrid, .noPlayback:
+            return true
+        case .updated, .failed:
+            return false
+        }
+    }
 }
 
 enum PlaybackRefreshCoordinator {
