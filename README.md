@@ -143,7 +143,7 @@ With active playback, the refreshed widget shows the current album. With idle pl
 - Two through four albums use a 2×2 grid in either widget.
 - Five through nine albums use a 3×3 grid in the large widget.
 - The small widget always uses at most the four most recent albums in a 2×2 grid.
-- Grid covers have thin black gutters and a matching black outer inset.
+- Grid covers have subtly rounded corners, black gutters, and a larger black outer inset whose corners follow the widget shape.
 - Unused grid cells are plain black with no placeholder artwork.
 
 The widget is user-driven: it refreshes when tapped and also rereads the cache when WidgetKit requests a new timeline. iOS ultimately controls widget refresh scheduling.

@@ -85,32 +85,41 @@ struct NowPlayingArtworkWidgetView: View {
         _ layout: CachedArtworkLinkLayout
     ) -> some View {
         GeometryReader { geometry in
-            let imageDimension = max(geometry.size.width, geometry.size.height)
-            let imageOrigin = CGPoint(
-                x: (geometry.size.width - imageDimension) / 2,
-                y: (geometry.size.height - imageDimension) / 2
-            )
-            let gutter = layout.columns > 1
-                ? imageDimension * ArtworkCache.gridGutterFraction
-                : 0
-            let cellDimension = (
-                imageDimension - gutter * CGFloat(layout.columns + 1)
-            ) / CGFloat(layout.columns)
+            if layout.columns == 1, let link = layout.links.first {
+                albumButton(link)
+                    .frame(
+                        width: geometry.size.width,
+                        height: geometry.size.height
+                    )
+            } else {
+                let outerPadding = ArtworkCache.gridOuterPadding
+                let contentSize = CGSize(
+                    width: max(0, geometry.size.width - outerPadding * 2),
+                    height: max(0, geometry.size.height - outerPadding * 2)
+                )
+                let imageDimension = max(contentSize.width, contentSize.height)
+                let imageOrigin = CGPoint(
+                    x: outerPadding + (contentSize.width - imageDimension) / 2,
+                    y: outerPadding + (contentSize.height - imageDimension) / 2
+                )
+                let gutter = imageDimension * ArtworkCache.gridGutterFraction
+                let cellDimension = (
+                    imageDimension - gutter * CGFloat(layout.columns - 1)
+                ) / CGFloat(layout.columns)
 
-            ZStack(alignment: .topLeading) {
-                ForEach(Array(layout.links.enumerated()), id: \.offset) { index, link in
-                    albumButton(link)
-                        .frame(width: cellDimension, height: cellDimension)
-                        .offset(
-                            x: imageOrigin.x
-                                + gutter
-                                + CGFloat(index % layout.columns)
-                                * (cellDimension + gutter),
-                            y: imageOrigin.y
-                                + gutter
-                                + CGFloat(index / layout.columns)
-                                * (cellDimension + gutter)
-                        )
+                ZStack(alignment: .topLeading) {
+                    ForEach(Array(layout.links.enumerated()), id: \.offset) { index, link in
+                        albumButton(link)
+                            .frame(width: cellDimension, height: cellDimension)
+                            .offset(
+                                x: imageOrigin.x
+                                    + CGFloat(index % layout.columns)
+                                    * (cellDimension + gutter),
+                                y: imageOrigin.y
+                                    + CGFloat(index / layout.columns)
+                                    * (cellDimension + gutter)
+                            )
+                    }
                 }
             }
         }
@@ -146,11 +155,24 @@ struct NowPlayingArtworkWidgetView: View {
     @ViewBuilder
     private var artwork: some View {
         if let data = entry.artworkData, let image = UIImage(data: data) {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFill()
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .clipped()
+            if let layout = entry.linkLayout, layout.columns > 1 {
+                ZStack {
+                    Color.black
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .clipped()
+                        .clipShape(ContainerRelativeShape())
+                        .padding(ArtworkCache.gridOuterPadding)
+                }
+            } else {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .clipped()
+            }
         } else {
             ZStack {
                 Color.black

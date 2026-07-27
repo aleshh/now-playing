@@ -77,7 +77,10 @@ enum ArtworkCache {
     private static let maximumArtworkSize = 20 * 1_024 * 1_024
     private static let gridDimension = 900
     private static let gridCount = 9
-    private static let gridGutter = 10
+    private static let gridGutter = 18
+    private static let gridCellCornerRadius: CGFloat = 12
+
+    static let gridOuterPadding: CGFloat = 9
 
     static var gridGutterFraction: CGFloat {
         CGFloat(gridGutter) / CGFloat(gridDimension)
@@ -214,7 +217,7 @@ enum ArtworkCache {
         let dimension = CGFloat(gridDimension)
         let gutter = CGFloat(gridGutter)
         let cellDimension = (
-            dimension - gutter * CGFloat(columns + 1)
+            dimension - gutter * CGFloat(columns - 1)
         ) / CGFloat(columns)
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
@@ -234,12 +237,17 @@ enum ArtworkCache {
                 let row = index / columns
                 let column = index % columns
                 let cell = CGRect(
-                    x: gutter + CGFloat(column) * (cellDimension + gutter),
-                    y: gutter + CGFloat(row) * (cellDimension + gutter),
+                    x: CGFloat(column) * (cellDimension + gutter),
+                    y: CGFloat(row) * (cellDimension + gutter),
                     width: cellDimension,
                     height: cellDimension
                 )
-                drawAspectFill(image, in: cell, context: context.cgContext)
+                drawAspectFill(
+                    image,
+                    in: cell,
+                    cornerRadius: gridCellCornerRadius,
+                    context: context.cgContext
+                )
             }
         }
 
@@ -300,6 +308,7 @@ enum ArtworkCache {
     private static func drawAspectFill(
         _ image: UIImage,
         in cell: CGRect,
+        cornerRadius: CGFloat,
         context: CGContext
     ) {
         let widthScale = cell.width / image.size.width
@@ -317,7 +326,13 @@ enum ArtworkCache {
         )
 
         context.saveGState()
-        context.clip(to: cell)
+        context.addPath(
+            UIBezierPath(
+                roundedRect: cell,
+                cornerRadius: cornerRadius
+            ).cgPath
+        )
+        context.clip()
         image.draw(in: destination)
         context.restoreGState()
     }
