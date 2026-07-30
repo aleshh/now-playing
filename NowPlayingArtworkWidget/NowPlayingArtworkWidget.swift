@@ -8,6 +8,31 @@ struct ArtworkEntry: TimelineEntry {
     let linkLayout: CachedArtworkLinkLayout?
 }
 
+private actor AutomaticWidgetRefreshGate {
+    static let shared = AutomaticWidgetRefreshGate()
+
+    private var inFlightTask: Task<Void, Never>?
+
+    func refreshIfDue() async {
+        if let inFlightTask {
+            await inFlightTask.value
+            return
+        }
+        guard PlaybackRefreshSchedule.reserveAutomaticRefresh() else {
+            return
+        }
+
+        let task = Task {
+            _ = await PlaybackRefreshCoordinator.refresh(
+                reloadWidgetTimelines: false
+            )
+        }
+        inFlightTask = task
+        await task.value
+        inFlightTask = nil
+    }
+}
+
 struct ArtworkTimelineProvider: TimelineProvider {
     func placeholder(in context: Context) -> ArtworkEntry {
         ArtworkEntry(date: Date(), artworkData: nil, linkLayout: nil)
@@ -24,17 +49,31 @@ struct ArtworkTimelineProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<ArtworkEntry>) -> Void) {
-        let entry = ArtworkEntry(
-            date: Date(),
-            artworkData: cachedArtwork(for: context.family),
-            linkLayout: cachedLinkLayout(for: context.family)
-        )
-        completion(
-            Timeline(
-                entries: [entry],
-                policy: .after(Date().addingTimeInterval(60 * 60))
+        let variant = cacheVariant(for: context.family)
+        let isPreview = context.isPreview
+
+        Task {
+            if !isPreview {
+                await AutomaticWidgetRefreshGate.shared.refreshIfDue()
+            }
+
+            let entryDate = Date()
+            let entry = ArtworkEntry(
+                date: entryDate,
+                artworkData: ArtworkCache.cachedData(for: variant),
+                linkLayout: ArtworkCache.cachedLinkLayout(for: variant)
             )
-        )
+            completion(
+                Timeline(
+                    entries: [entry],
+                    policy: .after(
+                        entryDate.addingTimeInterval(
+                            PlaybackRefreshSchedule.timelineInterval
+                        )
+                    )
+                )
+            )
+        }
     }
 
     private func cachedArtwork(for family: WidgetFamily) -> Data? {

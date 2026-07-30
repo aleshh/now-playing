@@ -146,7 +146,7 @@ With active playback, the refreshed widget shows the current album. With idle pl
 - Grid covers have subtly rounded corners, black gutters, and a larger black outer inset whose corners follow the widget shape.
 - Unused grid cells are plain black with no placeholder artwork.
 
-The widget is user-driven: it refreshes when tapped and also rereads the cache when WidgetKit requests a new timeline. iOS ultimately controls widget refresh scheduling.
+The widget refreshes immediately when tapped. It also asks WidgetKit for a new timeline every 30 minutes; whenever WidgetKit grants that request, the extension checks Spotify and refreshes the artwork or recent-albums grid before creating the new entry. The 30-minute value is an earliest requested time, not a guarantee—iOS ultimately controls the schedule based on visibility, usage, battery, and the widget’s daily refresh budget.
 
 ## Troubleshooting
 

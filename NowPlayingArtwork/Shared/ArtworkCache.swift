@@ -259,7 +259,7 @@ enum ArtworkCache {
 
     private static func downloadValidatedImageData(from url: URL) async throws -> Data {
         var request = URLRequest(url: url)
-        request.cachePolicy = .reloadIgnoringLocalCacheData
+        request.cachePolicy = .returnCacheDataElseLoad
         request.timeoutInterval = 15
 
         let (data, response) = try await URLSession.shared.data(for: request)

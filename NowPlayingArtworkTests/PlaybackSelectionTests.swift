@@ -141,6 +141,33 @@ final class PlaybackSelectionTests: XCTestCase {
         )
     }
 
+    func testAutomaticRefreshScheduleHonorsMinimumInterval() {
+        let now = Date(timeIntervalSince1970: 10_000)
+
+        XCTAssertTrue(
+            PlaybackRefreshSchedule.automaticRefreshIsDue(
+                lastAttempt: nil,
+                at: now
+            )
+        )
+        XCTAssertFalse(
+            PlaybackRefreshSchedule.automaticRefreshIsDue(
+                lastAttempt: now.addingTimeInterval(
+                    -PlaybackRefreshSchedule.minimumAutomaticInterval + 1
+                ),
+                at: now
+            )
+        )
+        XCTAssertTrue(
+            PlaybackRefreshSchedule.automaticRefreshIsDue(
+                lastAttempt: now.addingTimeInterval(
+                    -PlaybackRefreshSchedule.minimumAutomaticInterval
+                ),
+                at: now
+            )
+        )
+    }
+
     private func recentAlbum(
         id: String,
         artworkURL: URL
