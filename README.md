@@ -137,7 +137,7 @@ Every tap checks playback and refreshes the cached widget first. When a recent-a
 
 Album links use `https://open.spotify.com/album/...` universal URLs so iOS can open the Spotify app when installed and fall back to the website otherwise. On iOS 18.2 or later, Spotify opens directly after the intent finishes. On iOS 17 through 18.1, the Now Playing host app briefly opens before forwarding to Spotify.
 
-With active playback, the refreshed widget shows the current album. With idle playback, it downloads the most recent Spotify history, keeps only releases Spotify classifies as albums, removes repeated albums while preserving recency, and lays out covers from newest to oldest starting at the top-left:
+With active playback, the refreshed widget shows the current album and also captures Spotify's recent album history in the background. With idle playback, it uses that history for the grid. Each Spotify check keeps only releases Spotify classifies as albums and merges them into an on-device history of the nine most recent distinct albums. Newly observed or replayed albums move to the front while older remembered albums fill any gaps left by Spotify's 50-track response. Covers are laid out from newest to oldest starting at the top-left:
 
 - One album fills either widget normally.
 - Two through four albums use a 2×2 grid in either widget.
@@ -146,7 +146,7 @@ With active playback, the refreshed widget shows the current album. With idle pl
 - Grid covers have subtly rounded corners, black gutters, and a larger black outer inset whose corners follow the widget shape.
 - Unused grid cells are plain black with no placeholder artwork.
 
-The widget refreshes immediately when tapped. It also asks WidgetKit for a new timeline every 30 minutes; whenever WidgetKit grants that request, the extension checks Spotify and refreshes the artwork or recent-albums grid before creating the new entry. The 30-minute value is an earliest requested time, not a guarantee—iOS ultimately controls the schedule based on visibility, usage, battery, and the widget’s daily refresh budget.
+The widget refreshes immediately when tapped. It also asks WidgetKit for a new timeline every five minutes; whenever WidgetKit grants that request, the extension checks Spotify and refreshes the artwork or recent-albums grid before creating the new entry. Five minutes is an earliest requested time, not a guarantee—iOS ultimately controls the schedule based on visibility, usage, battery, and the widget’s daily refresh budget.
 
 ## Troubleshooting
 
@@ -204,6 +204,7 @@ Confirm every bundle identifier and App Group is unique and registered to your o
 
 - Spotify access and refresh tokens and the client ID are stored in the shared Keychain.
 - Separate small and large cached artwork renders, their per-cell Spotify album links, and the widget-tap URL are stored in the shared App Group container.
+- Metadata for the nine most recently observed albums is stored in the shared App Group container so the grid can retain albums that fall out of Spotify's recent-track response.
 - The client secret is never requested or stored.
 - Artwork downloads are validated, limited to 20 MB, and written atomically.
 - Disconnecting Spotify removes its OAuth token. It does not delete the most recently cached artwork.

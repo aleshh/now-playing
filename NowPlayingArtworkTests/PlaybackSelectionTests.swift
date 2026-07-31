@@ -77,6 +77,61 @@ final class PlaybackSelectionTests: XCTestCase {
         )
     }
 
+    func testRememberedAlbumsFillAShortSpotifyResult() {
+        let recent = [
+            recentAlbum(id: "album-0", artworkURL: spotifyURL),
+            recentAlbum(id: "album-1", artworkURL: sonosURL)
+        ]
+        let remembered = (0..<9).map { index in
+            recentAlbum(
+                id: "album-\(index)",
+                artworkURL: URL(
+                    string: "https://example.com/remembered-\(index).jpg"
+                )!
+            )
+        }
+
+        let merged = RecentAlbumArtworkSelector.mergedAlbums(
+            recent: recent,
+            remembered: remembered,
+            limit: 9
+        )
+
+        XCTAssertEqual(merged.count, 9)
+        XCTAssertEqual(merged.prefix(2), recent.prefix(2))
+        XCTAssertEqual(
+            merged.map(\.albumID),
+            (0..<9).map { "album-\($0)" }
+        )
+    }
+
+    func testReplayedAlbumMovesToFrontWithCurrentMetadata() {
+        let replayed = recentAlbum(
+            id: "album-2",
+            artworkURL: URL(string: "https://example.com/new-art.jpg")!
+        )
+        let remembered = (0..<4).map { index in
+            recentAlbum(
+                id: "album-\(index)",
+                artworkURL: URL(
+                    string: "https://example.com/old-art-\(index).jpg"
+                )!
+            )
+        }
+
+        let merged = RecentAlbumArtworkSelector.mergedAlbums(
+            recent: [replayed],
+            remembered: remembered,
+            limit: 9
+        )
+
+        XCTAssertEqual(merged.first, replayed)
+        XCTAssertEqual(
+            merged.map(\.albumID),
+            ["album-2", "album-0", "album-1", "album-3"]
+        )
+    }
+
     func testRecentGridIncludesOnlySpotifyAlbumReleases() {
         XCTAssertTrue(
             RecentAlbumArtworkSelector.includes(releaseType: "album")

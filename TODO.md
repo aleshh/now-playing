@@ -16,7 +16,8 @@
 - [x] Grid layouts use rounded covers, black gutters, and a container-relative outer inset
 - [x] Recent history includes only releases Spotify classifies as albums
 - [x] Grid album taps open only when the refreshed playback status remains idle
-- [x] Timeline generation checks Spotify automatically on a 30-minute requested schedule
+- [x] Timeline generation checks Spotify automatically on a five-minute requested schedule
+- [x] Persist and merge the nine most recently observed albums across Spotify checks
 
 ## Spotify setup
 
@@ -37,6 +38,7 @@
 - [ ] Verify five or more recent albums use 3×3 in large and at most 2×2 in small.
 - [ ] Confirm grid covers are subtly rounded and the outer corners follow the widget shape.
 - [ ] Confirm Spotify singles and compilations do not appear in the recent-albums grid.
+- [ ] Confirm the grid eventually fills to nine distinct albums even when Spotify returns fewer unique albums in its latest 50 tracks.
 - [ ] Tap several different grid cells and confirm each opens its corresponding Spotify album.
 - [ ] While a grid is visible, start playback and tap an old grid cover; confirm the widget updates to current artwork without opening the old album.
 - [ ] Leave the widget untapped and confirm WidgetKit eventually refreshes it after playback changes.

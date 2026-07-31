@@ -13,7 +13,7 @@ enum SpotifyAuthorization {
     }
 }
 
-struct RecentAlbumArtwork: Equatable, Sendable {
+struct RecentAlbumArtwork: Codable, Equatable, Sendable {
     let albumID: String
     let albumName: String
     let artworkURL: URL
@@ -43,6 +43,14 @@ enum RecentAlbumArtworkSelector {
             }
         }
         return result
+    }
+
+    static func mergedAlbums(
+        recent: [RecentAlbumArtwork],
+        remembered: [RecentAlbumArtwork],
+        limit: Int
+    ) -> [RecentAlbumArtwork] {
+        uniqueAlbums(from: recent + remembered, limit: limit)
     }
 }
 

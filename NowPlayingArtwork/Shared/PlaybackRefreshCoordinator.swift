@@ -18,7 +18,7 @@ enum PlaybackRefreshOutcome: Equatable, Sendable {
 }
 
 enum PlaybackRefreshSchedule {
-    static let timelineInterval: TimeInterval = 30 * 60
+    static let timelineInterval: TimeInterval = 5 * 60
     static let minimumAutomaticInterval: TimeInterval = 5 * 60
 
     private static let lastAttemptKey = "lastPlaybackRefreshAttempt"
@@ -83,7 +83,9 @@ enum PlaybackRefreshCoordinator {
         switch decision {
         case .artwork(let url):
             do {
+                async let historyCapture: Void = captureRecentSpotifyAlbums()
                 try await ArtworkCache.downloadAndStore(from: url)
+                await historyCapture
                 if reloadWidgetTimelines {
                     WidgetCenter.shared.reloadTimelines(
                         ofKind: SharedConfiguration.widgetKind
@@ -95,7 +97,10 @@ enum PlaybackRefreshCoordinator {
             }
         case .fallback:
             do {
-                let recentAlbums = try await SpotifyService().recentAlbumArtwork()
+                let fetchedAlbums = try await SpotifyService().recentAlbumArtwork()
+                let recentAlbums = try ArtworkCache.rememberRecentAlbums(
+                    fetchedAlbums
+                )
                 guard !recentAlbums.isEmpty else {
                     return .noPlayback
                 }
@@ -112,5 +117,13 @@ enum PlaybackRefreshCoordinator {
         case .unavailable(let message):
             return .failed(message)
         }
+    }
+
+    private static func captureRecentSpotifyAlbums() async {
+        guard let fetchedAlbums = try? await SpotifyService().recentAlbumArtwork()
+        else {
+            return
+        }
+        _ = try? ArtworkCache.rememberRecentAlbums(fetchedAlbums)
     }
 }
