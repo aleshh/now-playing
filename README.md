@@ -2,7 +2,7 @@
 
 An iOS 17+ SwiftUI app with small and large square widgets. During active playback, the widget displays the current album artwork edge-to-edge. When playback is idle, it adapts its layout to the available recent albums and widget size. Tapping a visible album refreshes playback status first, then opens that album only if playback remains idle.
 
-If a refresh fails, the last successful artwork remains visible. Before the first successful refresh, the widget shows a dark music-note placeholder.
+If a refresh fails, the last successful artwork remains visible. Before the first qualifying album is observed, the idle widget shows a dark music-note placeholder.
 
 > The project is currently configured for Spotify only. Sonos is disabled and its future setup is documented in [TODO.md](TODO.md).
 
@@ -137,7 +137,7 @@ Every tap checks playback and refreshes the cached widget first. When a recent-a
 
 Album links use `https://open.spotify.com/album/...` universal URLs so iOS can open the Spotify app when installed and fall back to the website otherwise. On iOS 18.2 or later, Spotify opens directly after the intent finishes. On iOS 17 through 18.1, the Now Playing host app briefly opens before forwarding to Spotify.
 
-With active playback, the refreshed widget shows the current album and also captures Spotify's recent album history in the background. With idle playback, it uses that history for the grid. Each Spotify check keeps only releases Spotify classifies as albums and merges them into an on-device history of the nine most recent distinct albums. Newly observed or replayed albums move to the front while older remembered albums fill any gaps left by Spotify's 50-track response. Covers are laid out from newest to oldest starting at the top-left:
+With active playback, the refreshed widget shows the current artwork and also captures Spotify history in the background. With idle playback, it uses that history for the grid. A history item qualifies only when Spotify reports both an `album` release and an `album` playback context. Tracks started individually or played from playlists, artist pages, and other contexts are excluded even though Spotify still attaches their source-album metadata. Qualifying albums are merged into an on-device history of the nine most recent distinct albums. Newly observed or replayed albums move to the front while older remembered albums fill any gaps left by Spotify's 50-track response. Covers are laid out from newest to oldest starting at the top-left:
 
 - One album fills either widget normally.
 - Two through four albums use a 2×2 grid in either widget.
@@ -145,6 +145,7 @@ With active playback, the refreshed widget shows the current album and also capt
 - The small widget always uses at most the four most recent albums in a 2×2 grid.
 - Grid covers have subtly rounded corners, black gutters, and a larger black outer inset whose corners follow the widget shape.
 - Unused grid cells are plain black with no placeholder artwork.
+- If no qualifying album-context history exists, idle playback shows the neutral placeholder rather than retaining artwork from an individual or playlist track.
 
 The widget refreshes immediately when tapped. It also asks WidgetKit for a new timeline every five minutes; whenever WidgetKit grants that request, the extension checks Spotify and refreshes the artwork or recent-albums grid before creating the new entry. Five minutes is an earliest requested time, not a guarantee—iOS ultimately controls the schedule based on visibility, usage, battery, and the widget’s daily refresh budget.
 
@@ -170,6 +171,7 @@ Do not add a trailing slash or change capitalization.
 - Reconnect Spotify once if this installation was authorized before the grid feature was added.
 - Spotify's recently played endpoint contains tracks, not podcast episodes.
 - Releases Spotify classifies as singles or compilations are intentionally omitted.
+- Tracks played individually or from playlists and other non-album contexts are intentionally omitted.
 - One album should fill the widget; two through four should use 2×2.
 - With five or more albums, the large widget should use 3×3 while the small widget remains 2×2.
 - Unused cells should remain plain black.

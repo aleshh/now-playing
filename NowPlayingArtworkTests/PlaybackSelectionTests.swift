@@ -132,15 +132,36 @@ final class PlaybackSelectionTests: XCTestCase {
         )
     }
 
-    func testRecentGridIncludesOnlySpotifyAlbumReleases() {
+    func testRecentGridRequiresAnAlbumReleaseAndAlbumPlaybackContext() {
         XCTAssertTrue(
-            RecentAlbumArtworkSelector.includes(releaseType: "album")
+            RecentAlbumArtworkSelector.includes(
+                releaseType: "album",
+                playbackContextType: "album"
+            )
         )
         XCTAssertFalse(
-            RecentAlbumArtworkSelector.includes(releaseType: "single")
+            RecentAlbumArtworkSelector.includes(
+                releaseType: "single",
+                playbackContextType: "album"
+            )
         )
         XCTAssertFalse(
-            RecentAlbumArtworkSelector.includes(releaseType: "compilation")
+            RecentAlbumArtworkSelector.includes(
+                releaseType: "compilation",
+                playbackContextType: "album"
+            )
+        )
+        XCTAssertFalse(
+            RecentAlbumArtworkSelector.includes(
+                releaseType: "album",
+                playbackContextType: "playlist"
+            )
+        )
+        XCTAssertFalse(
+            RecentAlbumArtworkSelector.includes(
+                releaseType: "album",
+                playbackContextType: nil
+            )
         )
     }
 
@@ -185,7 +206,7 @@ final class PlaybackSelectionTests: XCTestCase {
         XCTAssertTrue(
             PlaybackRefreshOutcome.updatedRecentGrid.confirmsNoActivePlayback
         )
-        XCTAssertTrue(
+        XCTAssertFalse(
             PlaybackRefreshOutcome.noPlayback.confirmsNoActivePlayback
         )
         XCTAssertFalse(

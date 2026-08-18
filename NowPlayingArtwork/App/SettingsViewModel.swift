@@ -187,6 +187,7 @@ final class SettingsViewModel: ObservableObject {
             cachedArtworkData = ArtworkCache.cachedData()
             statusMessage = "Recent-albums grid updated."
         case .noPlayback:
+            cachedArtworkData = ArtworkCache.cachedData()
             statusMessage = "Nothing is currently playing."
         case .failed(let message):
             statusMessage = message

@@ -14,7 +14,7 @@
 - [x] Idle artwork adapts by album count and widget size: single cover, 2×2, or large-only 3×3
 - [x] Each visible recent-album cell opens that album in Spotify
 - [x] Grid layouts use rounded covers, black gutters, and a container-relative outer inset
-- [x] Recent history includes only releases Spotify classifies as albums
+- [x] Recent history requires both an album release and Spotify album playback context
 - [x] Grid album taps open only when the refreshed playback status remains idle
 - [x] Timeline generation checks Spotify automatically on a five-minute requested schedule
 - [x] Persist and merge the nine most recently observed albums across Spotify checks
@@ -38,6 +38,8 @@
 - [ ] Verify five or more recent albums use 3×3 in large and at most 2×2 in small.
 - [ ] Confirm grid covers are subtly rounded and the outer corners follow the widget shape.
 - [ ] Confirm Spotify singles and compilations do not appear in the recent-albums grid.
+- [ ] Confirm tracks started individually or played from playlists do not enter the grid.
+- [ ] With no qualifying album history, stop playlist playback and confirm the idle widget returns to the neutral placeholder.
 - [ ] Confirm the grid eventually fills to nine distinct albums even when Spotify returns fewer unique albums in its latest 50 tracks.
 - [ ] Tap several different grid cells and confirm each opens its corresponding Spotify album.
 - [ ] While a grid is visible, start playback and tap an old grid cover; confirm the widget updates to current artwork without opening the old album.

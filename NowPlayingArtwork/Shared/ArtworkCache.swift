@@ -74,7 +74,8 @@ enum ArtworkCache {
     private static let largeFilename = "widget-artwork-large"
     private static let smallLinksFilename = "widget-artwork-small-links.json"
     private static let largeLinksFilename = "widget-artwork-large-links.json"
-    private static let recentAlbumHistoryFilename = "recent-album-history.json"
+    private static let legacyRecentAlbumHistoryFilename = "recent-album-history.json"
+    private static let recentAlbumHistoryFilename = "album-context-history-v2.json"
     private static let maximumArtworkSize = 20 * 1_024 * 1_024
     private static let gridDimension = 900
     private static let gridCount = 9
@@ -122,7 +123,18 @@ enum ArtworkCache {
             JSONEncoder().encode(mergedAlbums),
             filename: recentAlbumHistoryFilename
         )
+        removeCachedFile(filename: legacyRecentAlbumHistoryFilename)
         return mergedAlbums
+    }
+
+    static func clearCachedArtwork() {
+        [
+            smallFilename,
+            largeFilename,
+            smallLinksFilename,
+            largeLinksFilename,
+            legacyFilename
+        ].forEach { removeCachedFile(filename: $0) }
     }
 
     static func downloadAndStore(from url: URL) async throws {
@@ -358,6 +370,13 @@ enum ArtworkCache {
             return nil
         }
         return try? Data(contentsOf: url, options: .mappedIfSafe)
+    }
+
+    private static func removeCachedFile(filename: String) {
+        guard let url = cacheURL(filename: filename) else {
+            return
+        }
+        try? FileManager.default.removeItem(at: url)
     }
 
     private static func rememberedRecentAlbums() -> [RecentAlbumArtwork] {

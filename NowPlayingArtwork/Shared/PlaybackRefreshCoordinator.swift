@@ -9,9 +9,9 @@ enum PlaybackRefreshOutcome: Equatable, Sendable {
 
     var confirmsNoActivePlayback: Bool {
         switch self {
-        case .updatedRecentGrid, .noPlayback:
+        case .updatedRecentGrid:
             return true
-        case .updated, .failed:
+        case .updated, .noPlayback, .failed:
             return false
         }
     }
@@ -102,6 +102,12 @@ enum PlaybackRefreshCoordinator {
                     fetchedAlbums
                 )
                 guard !recentAlbums.isEmpty else {
+                    ArtworkCache.clearCachedArtwork()
+                    if reloadWidgetTimelines {
+                        WidgetCenter.shared.reloadTimelines(
+                            ofKind: SharedConfiguration.widgetKind
+                        )
+                    }
                     return .noPlayback
                 }
                 try await ArtworkCache.downloadGridAndStore(from: recentAlbums)
